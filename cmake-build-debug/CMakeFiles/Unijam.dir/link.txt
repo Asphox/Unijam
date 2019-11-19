@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/Unijam.dir/src/main.cpp.o CMakeFiles/Unijam.dir/src/Graphics/AnimatedTexture.cpp.o  -o Unijam /usr/lib/libsfml-graphics.so.2.5.1 /usr/lib/libsfml-window.so.2.5.1 /usr/lib/libsfml-system.so.2.5.1 

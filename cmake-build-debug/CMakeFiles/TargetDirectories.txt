@@ -1,3 +1,0 @@
-/home/asphox/Documents/Unijam/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/asphox/Documents/Unijam/cmake-build-debug/CMakeFiles/Unijam.dir
-/home/asphox/Documents/Unijam/cmake-build-debug/CMakeFiles/edit_cache.dir
