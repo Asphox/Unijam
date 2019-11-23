@@ -10,6 +10,9 @@
 #include "GameScene/GameMenu.h"
 #include "GameScene/GameScene.h"
 #include "GameController/GameController.h"
+#include "Entities/Car.h"
+#include "Physics/World.h"
+#include "Physics/EntityFactory.h"
 
 class Game
 {
@@ -38,6 +41,9 @@ private:
     GameMenu m_menu;
     GameScene m_scene;
     GameController m_controller0,m_controller1;
+    World m_world;
+    Car* m_car1,*m_car2;
+    Box* m_box1,*m_box2;
 };
 
 

@@ -4,7 +4,7 @@
 
 #include "GameScene.h"
 
-GameScene::GameScene(sf::RenderWindow& window)
+GameScene::GameScene(sf::RenderWindow& window) : m_window(window)
 {
     m_defaultViewSize.x = window.getSize().x;
     m_defaultViewSize.y = window.getSize().y/2;
@@ -21,11 +21,6 @@ GameScene::GameScene(sf::RenderWindow& window)
     m_viewBot.setSize(m_defaultViewSize);
     m_viewBot.setViewport(sf::FloatRect(0,0.5f,1.0f,0.5f));
 
-    m_test.setSize(sf::Vector2f(100,50));
-    m_test.setPosition(WORLD_SCENE_TOP_START_X,WORLD_SCENE_TOP_START_Y+m_viewTop.getSize().y-50);
-    m_test2.setSize(sf::Vector2f(100,50));
-    m_test2.setPosition(WORLD_SCENE_BOT_START_X,WORLD_SCENE_BOT_START_Y+m_viewTop.getSize().y-50);
-
     m_splitScreenSeparation.setSize(sf::Vector2f(window.getSize().x,GAMESCENE_SEPARATION_SPLITSCREEN_RATIO*window.getSize().y) );
     m_splitScreenSeparation.setOrigin(m_splitScreenSeparation.getSize().x/2,m_splitScreenSeparation.getSize().y/2);
     m_splitScreenSeparation.setPosition(window.getSize().x/2,window.getSize().y/2);
@@ -34,12 +29,6 @@ GameScene::GameScene(sf::RenderWindow& window)
 
 void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.setView(m_viewTop);
-    target.draw(m_test);
-
-    target.setView(m_viewBot);
-    target.draw(m_test2);
-
     target.setView(target.getDefaultView());
     target.draw(m_splitScreenSeparation);
 }
@@ -119,4 +108,19 @@ void GameScene::resetZoomBotScreen()
     m_viewBot.setSize(m_defaultViewSize);
     m_viewBot.setCenter(m_viewBot.getCenter().x-(m_currentZoomBot-1)*m_defaultViewSize.x/2.0f,m_viewBot.getCenter().y+(m_currentZoomBot-1)*m_defaultViewSize.y/2.0);
     m_currentZoomBot = 1.0f;
+}
+
+void GameScene::selectTopScreenView()
+{
+    m_window.setView(m_viewTop);
+}
+
+void GameScene::selectBotScreenView()
+{
+    m_window.setView(m_viewBot);
+}
+
+void GameScene::selectWindowView()
+{
+    m_window.setView(m_window.getDefaultView());
 }

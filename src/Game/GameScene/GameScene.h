@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <Options.h>
+#include "Physics/Entity.h"
 
 class GameScene : public sf::Drawable
 {
@@ -25,18 +26,28 @@ public:
     void setZoomTopScreen(float zoom);
     void setZoomBotScreen(float zoom);
 
+    void selectTopScreenView();
+    void selectBotScreenView();
+    void selectWindowView();
+
     void resetZoomTopScreen();
     void resetZoomBotScreen();
+
+    inline void setTopScreenEntitiesToDraw(std::vector<Entity*>* entities ){ m_topScreenEntities = entities; }
+    inline void setBotScreenEntitiesToDraw(std::vector<Entity*>* entities ){ m_botScreenEntities = entities; }
 
 private:
     sf::View m_viewTop,m_viewBot;
     sf::Vector2f m_viewTopNonZoomedCenter, m_viewBotNonZoomedCenter;
     float m_currentZoomTop = 1.0f, m_currentZoomBot = 1.0f;
 
-    sf::RectangleShape m_test,m_test2;
+    sf::RenderWindow& m_window;
 
     sf::RectangleShape m_splitScreenSeparation;
     sf::Vector2f m_defaultViewSize;
+
+    std::vector<Entity*>* m_topScreenEntities = nullptr;
+    std::vector<Entity*>* m_botScreenEntities = nullptr;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

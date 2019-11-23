@@ -29,6 +29,8 @@ constexpr uint8_t XBOXC_BUTTON_A_ID = 0;
 constexpr uint8_t XBOXC_BUTTON_SELECT_ID = 6;
 constexpr uint8_t XBOXC_BUTTON_START_ID = 7;
 
+constexpr float   PHY_TIME_STEP = 1.0f / 60.0f;
+
 
 
 #endif //UNIJAM_OPTIONS_H

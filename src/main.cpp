@@ -9,6 +9,7 @@
 
 int main()
 {
+    /*
     World world = World(-10.0f);
     EntityFactory factory = EntityFactory();
     factory.createBoxDynamic(world,400,400,380,20, 1, 1, 5);
@@ -45,7 +46,10 @@ int main()
         window.display();
 
     }
-
+     */
+    sf::RenderWindow window(sf::VideoMode(1600, 720), "SFML works!");
+    Game game(window);
+    game.run();
 
     return 0;
 }
