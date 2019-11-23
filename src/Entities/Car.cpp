@@ -5,7 +5,8 @@
 #include "Car.h"
 
 
-Car::Car(Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint) {
+Car::Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint) {
+    m_vehiclePhysicalBody = vehicleBody;
     m_carTop = bodyTop;
     m_carBot = bodyBot;
     m_leftWheel = leftWheel;
@@ -29,32 +30,44 @@ void Car::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void Car::accelerate(){
-    if (m_leftJoint->GetMotorSpeed() > -m_maxSpeed){
-        m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() - m_incrementingStep);
-        if (!m_leftJoint->GetMotorSpeed() > -m_maxSpeed) {
-            m_leftJoint->SetMotorSpeed(-m_maxSpeed);
+    if (m_leftJoint->GetMotorSpeed() > -m_maxVelocity){
+        m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() - m_linearVelocityIncrement);
+        if (!m_leftJoint->GetMotorSpeed() > -m_maxVelocity) {
+            m_leftJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
-    if (m_rightJoint->GetMotorSpeed() > -m_maxSpeed){
-        m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() - m_incrementingStep);
-        if (!m_rightJoint->GetMotorSpeed() > -m_maxSpeed) {
-            m_rightJoint->SetMotorSpeed(-m_maxSpeed);
+    if (m_rightJoint->GetMotorSpeed() > -m_maxVelocity){
+        m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() - m_linearVelocityIncrement);
+        if (!m_rightJoint->GetMotorSpeed() > -m_maxVelocity) {
+            m_rightJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
     printf("right: %f\n", m_rightJoint->GetMotorSpeed());
 }
 
 void Car::decelerate(){
-    if (m_leftJoint->GetMotorSpeed() < m_maxSpeed){
-        m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() + m_incrementingStep);
-        if (!m_leftJoint->GetMotorSpeed() < m_maxSpeed) {
-            m_leftJoint->SetMotorSpeed(m_maxSpeed);
+    if (m_leftJoint->GetMotorSpeed() < m_maxVelocity){
+        m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() + m_linearVelocityIncrement);
+        if (!m_leftJoint->GetMotorSpeed() < m_maxVelocity) {
+            m_leftJoint->SetMotorSpeed(m_maxVelocity);
         }
     }
-    if (m_rightJoint->GetMotorSpeed() < m_maxSpeed){
-        m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() + m_incrementingStep);
-        if (!m_rightJoint->GetMotorSpeed() < m_maxSpeed) {
-            m_rightJoint->SetMotorSpeed(m_maxSpeed);
+    if (m_rightJoint->GetMotorSpeed() < m_maxVelocity){
+        m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() + m_linearVelocityIncrement);
+        if (!m_rightJoint->GetMotorSpeed() < m_maxVelocity) {
+            m_rightJoint->SetMotorSpeed(m_maxVelocity);
         }
     }
+}
+
+void Car::rotateLeft(float userValue) {
+    m_vehiclePhysicalBody->ApplyAngularImpulse(userValue * 100, false);
+}
+
+void Car::rotateRight(float userValue) {
+    m_vehiclePhysicalBody->ApplyAngularImpulse(-userValue * 100, false);
+}
+
+void Car::jump(){
+    m_vehiclePhysicalBody->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
 }
