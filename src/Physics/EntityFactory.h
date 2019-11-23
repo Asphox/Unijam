@@ -27,7 +27,9 @@ public:
     Car* createCar(World& world, float x, float y);
     Car* createCar(World& world, float x, float y, float size);
 
+    Convex* createConvexStatic(World &world, float x, float y, std::vector<std::pair<float, float>>& vertices);
     Convex* createConvexStatic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& vertices);
+    Convex* createConvexDynamic(World &world, float x, float y, std::vector<std::pair<float, float>>& vertices, float density, float friction);
     Convex* createConvexDynamic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& vertices, float density, float friction);
 
 };

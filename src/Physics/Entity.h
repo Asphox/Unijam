@@ -6,7 +6,7 @@
 #define UNIJAM_ENTITY_H
 
 
-#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics.hpp>
 
 class Entity : public sf::Drawable
 {

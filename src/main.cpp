@@ -6,7 +6,6 @@
 
 #include "Game/Game.h"
 
-
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1600, 720), "SFML works!");
