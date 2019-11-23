@@ -18,10 +18,10 @@ private:
     Circle* createCircle(World& world, float x, float y, float r, float density, float friction, bool isStatic);
     Convex* createConvex(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction, bool isStatic);
 public:
-    Box* createBoxStatic(World& world, float x, float y, float width, float height);
-    Box* createBoxStatic(World& world, float x, float y, float width, float height, float angle);
-    Box* createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction);
-    Box* createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction, float angle);
+    Box* createBoxStatic(World& world, float x, float y, float halfWidth, float halfHeight);
+    Box* createBoxStatic(World& world, float x, float y, float halfWidth, float halfHeight, float angle);
+    Box* createBoxDynamic(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction);
+    Box* createBoxDynamic(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction, float angle);
     Circle* createCircleStatic(World& world, float x, float y, float r);
     Circle* createCircleDynamic(World& world, float x, float y, float r, float density, float friction);
     Car* createCar(World& world, float x, float y);

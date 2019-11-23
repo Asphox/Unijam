@@ -20,21 +20,25 @@ void Game::reset()
     level1 = new Level();
 
     //Ground level 1
-    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+5000/2, WORLD_SCENE_TOP_START_Y+500, 5000, 200));
-    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5000/2, WORLD_SCENE_BOT_START_Y+500, 5000, 200));
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+500, 1000, 200));
+    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+500, 1000, 200));
+
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+2200+2000, WORLD_SCENE_TOP_START_Y+500, 2000, 200));
 
     //Premier obstacle
-    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+300, 200, 25));
-    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+300, 200, 25));
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+300, 200, 50));
+    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+300, 200, 50));
 
     //Second obstacle
     std::vector<std::pair<float, float>> convex1Vertices;
-    convex1Vertices.push_back(std::pair<float,float>(-300,-25));
-    convex1Vertices.push_back(std::pair<float,float>(-50,25));
-    convex1Vertices.push_back(std::pair<float,float>(50,25));
-    convex1Vertices.push_back(std::pair<float,float>(300,-25));
-    level1->addEntityTop(factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+2500, WORLD_SCENE_TOP_START_Y+250, convex1Vertices));
-    level1->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+2500, WORLD_SCENE_BOT_START_Y+250, convex1Vertices));
+    convex1Vertices.push_back(std::pair<float,float>(-300,-75));
+    convex1Vertices.push_back(std::pair<float,float>(-50,75));
+    convex1Vertices.push_back(std::pair<float,float>(50,75));
+    convex1Vertices.push_back(std::pair<float,float>(300,-75));
+    level1->addEntityTop(factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+2500, WORLD_SCENE_TOP_START_Y+300, convex1Vertices));
+    level1->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+2500, WORLD_SCENE_BOT_START_Y+300, convex1Vertices));
+
+
 
 
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+100, WORLD_SCENE_TOP_START_Y);
