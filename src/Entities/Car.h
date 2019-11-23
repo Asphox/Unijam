@@ -20,7 +20,7 @@ private:
 
     float m_maxVelocity = 100;
     float m_linearVelocityIncrement = 0.5;
-    float m_angularVelocityCoefficient = 5000;
+    float m_angularVelocityCoefficient = 2000;
     float m_jumpVerticalCoefficient = 2000000;
 
 

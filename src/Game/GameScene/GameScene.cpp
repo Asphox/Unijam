@@ -25,6 +25,7 @@ GameScene::GameScene(sf::RenderWindow& window) : m_window(window)
     m_splitScreenSeparation.setOrigin(m_splitScreenSeparation.getSize().x/2,m_splitScreenSeparation.getSize().y/2);
     m_splitScreenSeparation.setPosition(window.getSize().x/2,window.getSize().y/2);
     m_splitScreenSeparation.setFillColor(sf::Color::Cyan);
+
 }
 
 void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -133,4 +134,25 @@ void GameScene::selectBotScreenView()
 void GameScene::selectWindowView()
 {
     m_window.setView(m_window.getDefaultView());
+}
+
+void GameScene::reset()
+{
+    m_viewTopNonZoomedCenter.x = WORLD_SCENE_TOP_START_X+m_window.getSize().x/2;
+    m_viewTopNonZoomedCenter.y = WORLD_SCENE_TOP_START_Y+m_window.getSize().y/4;
+    m_viewBotNonZoomedCenter.x = WORLD_SCENE_BOT_START_X+m_window.getSize().x/2;
+    m_viewBotNonZoomedCenter.y = WORLD_SCENE_BOT_START_Y+m_window.getSize().y/4;
+
+    m_viewTop.setCenter(m_viewTopNonZoomedCenter);
+    m_viewTop.setSize(m_defaultViewSize);
+    m_viewTop.setViewport(sf::FloatRect(0,0,1.0f,0.5f));
+
+    m_viewBot.setCenter(m_viewBotNonZoomedCenter);
+    m_viewBot.setSize(m_defaultViewSize);
+    m_viewBot.setViewport(sf::FloatRect(0,0.5f,1.0f,0.5f));
+
+    m_splitScreenSeparation.setSize(sf::Vector2f(m_window.getSize().x,GAMESCENE_SEPARATION_SPLITSCREEN_RATIO*m_window.getSize().y) );
+    m_splitScreenSeparation.setOrigin(m_splitScreenSeparation.getSize().x/2,m_splitScreenSeparation.getSize().y/2);
+    m_splitScreenSeparation.setPosition(m_window.getSize().x/2,m_window.getSize().y/2);
+    m_splitScreenSeparation.setFillColor(sf::Color::Cyan);
 }

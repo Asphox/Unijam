@@ -42,6 +42,10 @@ public:
 
     inline float getCenterTopX(){ return m_viewTop.getCenter().x; }
     inline float getCenterBotX(){ return m_viewBot.getCenter().x; }
+    inline float getLeftBorderTopX(){ return getCenterTopX() - m_window.getSize().x/2; }
+    inline float getLeftBorderBotX(){ return getCenterBotX() - m_window.getSize().x/2; }
+
+    void reset();
 
 
 private:

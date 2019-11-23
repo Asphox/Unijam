@@ -69,3 +69,15 @@ void GameMenu::updateControllerStatus()
     else
         m_xboxc1state.setFillColor(sf::Color::Red);
 }
+
+void GameMenu::setSuccess()
+{
+    m_GameTitle.setString("You did it!");
+    m_pressKey.setString("Press start to retry !");
+}
+
+void GameMenu::setEchec()
+{
+    m_GameTitle.setString("Oh no you died...");
+    m_pressKey.setString("Press start to retry !");
+}

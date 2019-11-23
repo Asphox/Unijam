@@ -15,6 +15,10 @@ class GameMenu : public sf::Drawable
 public:
       GameMenu(Game*);
     void updateControllerStatus();
+    void setDefault();
+    void setEchec();
+    void setSuccess();
+
 private:
     Game* m_game;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

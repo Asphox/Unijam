@@ -42,7 +42,6 @@ void Car::accelerate(float f){
             m_rightJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
-    printf("right: %f\n", m_rightJoint->GetMotorSpeed());
 }
 
 void Car::decelerate(float f){
@@ -72,8 +71,8 @@ void Car::jump(){
 sf::Vector2f Car::getPosition() const
 {
     sf::Vector2f r;
-    r.x = m_vehiclePhysicalBody->GetWorldCenter().x;
-    r.y = m_vehiclePhysicalBody->GetWorldCenter().y;
+    r.x = m_vehiclePhysicalBody->GetPosition().x;
+    r.y = m_vehiclePhysicalBody->GetPosition().y;
     return r;
 }
 

@@ -30,7 +30,9 @@ public:
     {
         MENU,
         PAUSED,
-        RUNNING
+        RUNNING,
+        SUCCES,
+        ECHEC
     }m_state = STATE::MENU;
 
 private:
@@ -40,6 +42,8 @@ private:
     void pollEvent();
 
     void reset();
+
+    void checkDeath();
 
     sf::RenderWindow& m_window;
     sf::Font m_font;
@@ -54,6 +58,8 @@ private:
     //Box* m_box1,*m_box2;
 
     Timer<Game> physicsTimer;
+
+    float m_car1speedX = 0,m_car2speedX = 0;
 
     float getDeltaCarTopStartWithCurrent();
     float getDeltaCarBotStartWithCurrent();
