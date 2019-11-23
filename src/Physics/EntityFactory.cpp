@@ -10,7 +10,7 @@
 Entity* EntityFactory::createBox(World& world, float x, float y, float width, float height, float density, float friction, float angle, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
-    bodyDef.position.Set(x, y);
+    bodyDef.position.Set(x, -y);
 
     b2PolygonShape boxShape;
     boxShape.SetAsBox(width*2, height*2);
@@ -28,7 +28,7 @@ Entity* EntityFactory::createBox(World& world, float x, float y, float width, fl
     }
     //Here, the body is created
     //Entity creation
-    Entity* box = new Box(*body, x, y, width*2, height*2, angle*3.14/180);
+    Entity* box = new Box(body, x, y, width*2, height*2, angle*3.14/180);
     //Here, the entity is created
     //We add the entity to the world list of entities
     world.addEntity(box);
@@ -55,7 +55,7 @@ Entity* EntityFactory::createBoxDynamic(World& world, float x, float y, float wi
 Entity* EntityFactory::createCircle(World &world, float x, float y, float r, float density, float friction, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
-    bodyDef.position.Set(x, y);
+    bodyDef.position.Set(x, -y);
 
     b2CircleShape circleShape;
     circleShape.m_radius=r;
@@ -73,7 +73,7 @@ Entity* EntityFactory::createCircle(World &world, float x, float y, float r, flo
     }
     //Here, the body is created
     //Entity creation
-    Entity* circle = new Circle(*body, x, y, r);
+    Entity* circle = new Circle(body, x, y, r);
     //Here, the entity is created
     //We add the entity to the world list of entities
     world.addEntity(circle);

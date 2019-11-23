@@ -15,7 +15,6 @@ class World {
 private:
     b2World m_world;
     std::vector<Entity*> m_entities;
-    b2Body* createBox(bool isStatic, float x, float y, float halfWidth, float halfHeight, float density, float friction);
 public:
     World(float gravity);
     ~World();

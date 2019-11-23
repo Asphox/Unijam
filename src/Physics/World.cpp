@@ -17,11 +17,14 @@ World::~World()
     }
 }
 
-
 std::vector<Entity*>& World::getEntities() {
     return m_entities;
 }
 
 void World::addEntity(Entity* entity) {
     m_entities.push_back(entity);
+}
+
+b2World &World::getWorld() {
+    return m_world;
 }

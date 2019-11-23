@@ -4,11 +4,13 @@
 
 #include "Box.h"
 
-Box::Box(b2Body& body, float x, float y, float w, float h, float a) : sf::RectangleShape(sf::Vector2f(w,h)), Entity(), m_body(body)
+Box::Box(b2Body* body, float x, float y, float w, float h, float a) : Entity(), m_body(body)
 {
-    setPosition(x, -y);
-    setOrigin(w/2, h/2);
-    setRotation(a);
+    m_rectangle = sf::RectangleShape(sf::Vector2f(w, h));
+    m_rectangle.setPosition(x, y);
+    m_rectangle.setOrigin(w / 2, h / 2);
+    m_rectangle.setRotation(a);
+    m_rectangle.setFillColor(sf::Color(255,255,255));
 }
 
 Box::~Box() {
@@ -16,5 +18,10 @@ Box::~Box() {
 }
 
 void Box::update() {
+    m_rectangle.setPosition(m_body->GetPosition().x, -m_body->GetPosition().y);
+    m_rectangle.setRotation(m_body->GetAngle());
+}
 
+void Box::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    target.draw(m_rectangle, states);
 }
