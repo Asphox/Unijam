@@ -6,6 +6,8 @@
 #define UNIJAM_ENTITYFACTORY_H
 
 
+#include "Box.h"
+#include "Circle.h"
 #include "World.h"
 
 class EntityFactory {
@@ -19,6 +21,7 @@ public:
     Entity* createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction, float angle);
     Entity* createCircleStatic(World& world, float x, float y, float r);
     Entity* createCircleDynamic(World& world, float x, float y, float r, float density, float friction);
+    Entity* createCar(World& world, float x, float y);
 };
 
 
