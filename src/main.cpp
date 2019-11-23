@@ -9,7 +9,6 @@
 
 int main()
 {
-    /*
     World world = World(-10.0f);
     EntityFactory factory = EntityFactory();
     factory.createBoxDynamic(world,400,400,380,20, 1, 1, 5);
@@ -19,7 +18,7 @@ int main()
     factory.createCircleDynamic(world, 300, 30, 10, 10, 1);
     factory.createCircleDynamic(world, 680, 10, 10, 10, 1);
     Car* car1 = factory.createCar(world, 100, 300);
-    Car* car2 = factory.createCar(world, 700, 300);
+    //Car* car2 = factory.createCar(world, 700, 300);
     float32 timeStep = 1.0f / 60.0f;
 
     std::cout.sync_with_stdio(false);
@@ -35,8 +34,9 @@ int main()
 
         }
         world.step(timeStep);
-        car1->accelerate();
-        car2->decelerate();
+        //car1->accelerate();
+        //car1->jump();
+        //car2->decelerate();
         window.clear();
 
         for (Entity* entityIt : world.getEntities()){
@@ -46,10 +46,11 @@ int main()
         window.display();
 
     }
-     */
+
+    /*
     sf::RenderWindow window(sf::VideoMode(1600, 720), "SFML works!");
     Game game(window);
     game.run();
-
+*/
     return 0;
 }

@@ -19,9 +19,9 @@ private:
     b2WheelJoint* m_rightJoint;
 
     float m_maxVelocity = 20;
-    float m_maxAngularVelocity = 0.1;
     float m_linearVelocityIncrement = 0.05;
-    float m_angularVelocityCoefficient = 0.00001;
+    float m_angularVelocityCoefficient = 100;
+    float m_jumpVerticalCoefficient = 10000;
 
 
 public:

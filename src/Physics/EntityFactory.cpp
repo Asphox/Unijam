@@ -179,7 +179,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f*size, y-16.0f*size, circ.m_radius);
     Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
     Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
-    Car* car = new Car(vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);
+    Car* car = new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);
     world.addEntity(car);
 
     return car;
