@@ -93,6 +93,51 @@ Circle* EntityFactory::createCircleDynamic(World &world, float x, float y, float
     return createCircle(world, x, y, r, density, friction, false);
 }
 
+
+/** Convex **/
+Convex* EntityFactory::createConvex(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction, bool isStatic) {
+    //Body creation
+    b2BodyDef bodyDef;
+    if (!isStatic){
+        bodyDef.type = b2_dynamicBody;
+    }
+    bodyDef.position.Set(x, -y);
+    bodyDef.angle = a*3.14/180;
+
+    b2Vec2 verticesConvex[relativeVertices.size()];
+    int i = 0;
+    for (auto it : relativeVertices){
+        verticesConvex[i].Set(it.first, it.second);
+        i++;
+    }
+
+    b2PolygonShape convexShape;
+    convexShape.Set(verticesConvex, relativeVertices.size());
+
+    b2Body* body = world.getWorld().CreateBody(&bodyDef);
+    if (isStatic) {
+        body->CreateFixture(&convexShape, 0.0f);
+    } else {
+        b2FixtureDef fixtureDefConvex;
+        fixtureDefConvex.shape = &convexShape;
+        fixtureDefConvex.density = density;
+        fixtureDefConvex.friction = friction;
+        body->CreateFixture(&fixtureDefConvex);
+    }
+
+    Convex* convex = new Convex(body, x, y, a, relativeVertices);
+    world.addEntity(convex);
+    return convex;
+}
+
+Convex* EntityFactory::createConvexStatic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices) {
+    return createConvex(world, x, y, a, relativeVertices, 0,0,true);
+}
+
+Convex* EntityFactory::createConvexDynamic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction) {
+    return createConvex(world, x, y, a, relativeVertices, density, friction, false);
+}
+
 /** Car **/
 Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     // car body

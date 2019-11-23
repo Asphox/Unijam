@@ -17,13 +17,24 @@ void Game::run()
 {
     EntityFactory factory = EntityFactory();
     factory.createBoxDynamic(m_world,400,400,380,20, 1, 1, 5);
-    m_box1 = factory.createBoxStatic(m_world,WORLD_SCENE_TOP_START_X,WORLD_SCENE_TOP_START_Y+500/2,500,20);
-    m_box2 = factory.createBoxStatic(m_world,WORLD_SCENE_BOT_START_X,WORLD_SCENE_BOT_START_Y+500/2,500,20);
+    m_box1 = factory.createBoxStatic(m_world,WORLD_SCENE_TOP_START_X+500/2,WORLD_SCENE_TOP_START_Y+350,500,20);
+    m_box2 = factory.createBoxStatic(m_world,WORLD_SCENE_BOT_START_X+500/2,WORLD_SCENE_BOT_START_Y+350,500,20);
+    std::vector<std::pair<float, float>> triangle1Vertices;
+    triangle1Vertices.push_back(std::pair<float,float>(-75,-100));
+    triangle1Vertices.push_back(std::pair<float,float>(-75,-50));
+    triangle1Vertices.push_back(std::pair<float,float>(-25,-50));
+    triangle1Vertices.push_back(std::pair<float,float>(-25,50));
+    triangle1Vertices.push_back(std::pair<float,float>(25,50));
+    triangle1Vertices.push_back(std::pair<float,float>(25,-50));
+    triangle1Vertices.push_back(std::pair<float,float>(75,-50));
+    triangle1Vertices.push_back(std::pair<float,float>(75,-100));
+    m_convex1 = factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+100,WORLD_SCENE_TOP_START_Y+200, 0,triangle1Vertices);
     factory.createCircleDynamic(m_world, 500, 50, 10, 10, 1);
     factory.createCircleDynamic(m_world, 300, 30, 10, 10, 1);
     factory.createCircleDynamic(m_world, 680, 10, 10, 10, 1);
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+100, WORLD_SCENE_TOP_START_Y);
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+100, WORLD_SCENE_BOT_START_Y);
+
 
     m_controller0 = new GameController(this,m_car1,0);
     m_controller1 = new GameController(this,m_car2,1);
@@ -64,11 +75,13 @@ void Game::update()
         m_car1->update();
         m_window.draw(*m_car1);
         m_window.draw(*m_box1);
+        m_window.draw(*m_convex1);
         m_car2->update();
         m_scene.selectBotScreenView();
         m_window.draw(*m_car2);
         m_window.draw(*m_box2);
         m_window.draw(m_scene);
+
 
     }
     m_window.display();

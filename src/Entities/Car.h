@@ -30,11 +30,7 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void accelerate();
     void decelerate();
-
-    void rotateLeft(float userValue);
-
-    void rotateRight(float userValue);
-
+    void rotate(float userValue);
     void jump();
 };
 

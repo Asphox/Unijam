@@ -44,6 +44,7 @@ private:
     World m_world;
     Car* m_car1,*m_car2;
     Box* m_box1,*m_box2;
+    Convex* m_convex1;
 
 public:
     inline STATE getState() { return m_state; }

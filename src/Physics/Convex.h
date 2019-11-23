@@ -6,7 +6,7 @@
 #define UNIJAM_CONVEX_H
 
 
-#include <Box2D/Dynamics/b2Body.h>
+#include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 
@@ -17,6 +17,7 @@ private:
     sf::ConvexShape m_convex;
 public:
     Convex(b2Body* body, float x, float y, float a, b2Vec2* vertices, int verticesCount);
+    Convex(b2Body* body, float x, float y, float a, std::vector<std::pair<float, float>>& vertices);
     ~Convex();
     void update() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

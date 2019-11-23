@@ -16,6 +16,7 @@ class EntityFactory {
 private:
     Box* createBox(World& world, float x, float y, float width, float height, float density, float friction, float angle, bool isStatic);
     Circle* createCircle(World& world, float x, float y, float r, float density, float friction, bool isStatic);
+    Convex* createConvex(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction, bool isStatic);
 public:
     Box* createBoxStatic(World& world, float x, float y, float width, float height);
     Box* createBoxStatic(World& world, float x, float y, float width, float height, float angle);
@@ -25,6 +26,10 @@ public:
     Circle* createCircleDynamic(World& world, float x, float y, float r, float density, float friction);
     Car* createCar(World& world, float x, float y);
     Car* createCar(World& world, float x, float y, float size);
+
+    Convex* createConvexStatic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& vertices);
+    Convex* createConvexDynamic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& vertices, float density, float friction);
+
 };
 
 

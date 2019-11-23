@@ -37,7 +37,7 @@ void GameController::processInput(sf::Event &event)
                     }
 
                 }
-            break;
+                break;
 
             case sf::Event::JoystickButtonPressed :
                 if( event.joystickButton.joystickId == m_playerID )
@@ -51,7 +51,7 @@ void GameController::processInput(sf::Event &event)
                     }
 
                 }
-            break;
+                break;
 
         }
     }
@@ -64,7 +64,7 @@ void GameController::onInclination(float pos)
     {
         if(m_car)
         {
-            m_car->rotateLeft(-pos);
+            m_car->rotate(-pos);
         }
     }
 
@@ -96,7 +96,10 @@ void GameController::onDecelerate(float pos)
         if(m_car)
         {
             std::cout << m_playerID << " decelerate" << "|" << pos << std::endl;
-            m_car->decelerate();
+            if (pos > 0)
+            {
+                m_car->decelerate();
+            }
         }
     }
 
@@ -106,8 +109,13 @@ void GameController::onAccelerate(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car)
-            m_car->accelerate();
-        std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
+        if (m_car)
+        {
+            std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
+            if (pos > 0)
+            {
+                m_car->accelerate();
+            }
+        }
     }
 }
