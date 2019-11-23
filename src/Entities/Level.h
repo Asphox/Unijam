@@ -15,15 +15,16 @@ class Level{
 private:
     std::vector<Entity*> m_objects_top;
     std::vector<Entity*> m_objects_bot;
+    float m_distanceToWin;
 public:
-    Level();
+    Level(float distanceToWin);
     void addEntityTop(Entity* entity);
     void addEntityBot(Entity* entity);
     std::vector<Entity*>& getEntitiesTop();
     std::vector<Entity*>& getEntitiesBot();
     void drawTop(sf::RenderWindow& window);
     void drawBot(sf::RenderWindow& window);
-    void update();
+    float getDistanceToWin();
 };
 
 

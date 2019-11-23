@@ -16,6 +16,7 @@ public:
     World(float gravity);
     b2World& getWorld();
     void step(float deltaTime);
+    void clear();
 };
 
 

@@ -15,3 +15,7 @@ b2World& World::getWorld() {
 void World::step(float deltaTime) {
     m_world.Step(deltaTime, 6, 2);
 }
+
+void World::clear(){
+    m_world.Dump();
+}

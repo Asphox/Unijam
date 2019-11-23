@@ -17,6 +17,8 @@ private:
     Circle* m_rightWheel;
     b2WheelJoint* m_leftJoint;
     b2WheelJoint* m_rightJoint;
+    b2WheelJoint* m_compensatingJoint1;
+    b2WheelJoint* m_compensatingJoint2;
 
     float m_maxVelocity = 100;
     float m_linearVelocityIncrement = 0.5;
@@ -25,17 +27,11 @@ private:
 
 
 public:
-    Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWhee, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint);
+    Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWhee, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint, b2WheelJoint* compensatingJoint1, b2WheelJoint* compensatingJoint2);
     void update() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void accelerate(float);
     void decelerate(float);
-
-    void rotateLeft(float userValue);
-
-    void rotateRight(float userValue);
-
-
     void rotate(float userValue);
     void jump();
 

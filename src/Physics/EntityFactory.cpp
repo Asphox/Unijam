@@ -185,21 +185,34 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     circ.m_radius = 10*size;
     fixtureDefCirc.shape = &circ;
     fixtureDefCirc.density = 2.0f; //5
-    fixtureDefCirc.friction = 3.0f;
+    fixtureDefCirc.restitution = 1;
+    fixtureDefCirc.friction = 1.0f;
     fixtureDefCirc.filter.groupIndex = -1;
 
     b2BodyDef wheelBody;
     wheelBody.allowSleep = false;
     wheelBody.type = b2_dynamicBody;
-    wheelBody.position.Set(x-24.0f*size, -y-16.0f*size);
+    wheelBody.position.Set(x-25.0f*size, -y-22.0f*size);
+
     b2Body* rightWheel;
     rightWheel = world.getWorld().CreateBody(&wheelBody);
     rightWheel -> CreateFixture(&fixtureDefCirc);
 
-    wheelBody.position.Set(x+24.0f*size, -y-16.0f*size);
+    wheelBody.position.Set(x+30.0f*size, -y-22.0f*size);
     b2Body* leftWheel;
     leftWheel = world.getWorld().CreateBody(&wheelBody);
     leftWheel -> CreateFixture(&fixtureDefCirc);
+
+
+    wheelBody.position.Set(x, -y);
+    b2Body* compensatingWheel1;
+    compensatingWheel1 = world.getWorld().CreateBody(&wheelBody);
+    compensatingWheel1 -> CreateFixture(&fixtureDefCirc);
+
+    wheelBody.position.Set(x, -y);
+    b2Body* compensatingWheel2;
+    compensatingWheel2 = world.getWorld().CreateBody(&wheelBody);
+    compensatingWheel2 -> CreateFixture(&fixtureDefCirc);
 
     // join wheels to chassis
     b2WheelJointDef jd;
@@ -213,17 +226,17 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     jd.Initialize(vehicleBody, rightWheel, rightWheel->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     b2WheelJoint* rightJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
-/*
 
-    jd.Initialize(vehicleBody, rightWheel, rightWheel->GetWorldCenter(), b2Vec2(0,1));
+
+    jd.Initialize(vehicleBody, compensatingWheel1, compensatingWheel1->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     b2WheelJoint* compensatingJoint1 = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 
-    jd.Initialize(vehicleBody, rightWheel, rightWheel->GetWorldCenter(), b2Vec2(0,1));
+    jd.Initialize(vehicleBody, compensatingWheel2, compensatingWheel2->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     b2WheelJoint* compensatingJoint2 = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 
-*/
+
 
 
 
@@ -232,7 +245,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f*size, y-16.0f*size, circ.m_radius);
     Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
     Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
-    return new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);;
+    return new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint, compensatingJoint1, compensatingJoint2);
 }
 
 Car* EntityFactory::createCar(World &world, float x, float y) {

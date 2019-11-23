@@ -17,36 +17,48 @@ Game::Game(sf::RenderWindow& window) : m_menu(this), m_world(-10.0f), m_scene(wi
 void Game::reset()
 {
     EntityFactory factory = EntityFactory();
-    level1 = new Level();
 
+    /** Level 1 **/
+    level1 = new Level(10000);
     //Ground level 1
+    level1->addEntityTop(factory.createCircleDynamic(m_world, WORLD_SCENE_TOP_START_X + 100, WORLD_SCENE_TOP_START_Y+100, 25, 1, 0.5f));
     level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+500, 1000, 200));
     level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+500, 1000, 200));
-
-    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+2200+2000, WORLD_SCENE_TOP_START_Y+500, 2000, 200));
-
     //Premier obstacle
     level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+300, 200, 50));
     level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+300, 200, 50));
-
     //Second obstacle
     std::vector<std::pair<float, float>> convex1Vertices;
-    convex1Vertices.push_back(std::pair<float,float>(-300,-75));
+    convex1Vertices.push_back(std::pair<float,float>(-400,-75));
     convex1Vertices.push_back(std::pair<float,float>(-50,75));
     convex1Vertices.push_back(std::pair<float,float>(50,75));
-    convex1Vertices.push_back(std::pair<float,float>(300,-75));
-    level1->addEntityTop(factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+2500, WORLD_SCENE_TOP_START_Y+300, convex1Vertices));
-    level1->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+2500, WORLD_SCENE_BOT_START_Y+300, convex1Vertices));
-
-
-
+    convex1Vertices.push_back(std::pair<float,float>(400,-75));
+    level1->addEntityTop(factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+2600, WORLD_SCENE_TOP_START_Y+300, convex1Vertices));
+    level1->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+2600, WORLD_SCENE_BOT_START_Y+300, convex1Vertices));
+    //Trou TOP
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+3200, WORLD_SCENE_TOP_START_Y+500, 800, 200));
+    //Deux étages
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4700, WORLD_SCENE_TOP_START_Y+200, 500, 10));
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4700, WORLD_SCENE_TOP_START_Y+300, 500, 10));
+    //Bac à balles
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+5800, WORLD_SCENE_TOP_START_Y+300, 10, 25));
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+6000, WORLD_SCENE_TOP_START_Y+325, 210, 10));
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+6200, WORLD_SCENE_TOP_START_Y+300, 10, 25));
+    for (int i = 0; i < 50; i++) {
+        level1->addEntityTop(
+                factory.createCircleDynamic(m_world,
+                        WORLD_SCENE_TOP_START_X + 6000 + round((((double) rand() / (RAND_MAX)) + 1) * 150 - 75),
+                        WORLD_SCENE_TOP_START_Y + 100 + round((((double) rand() / (RAND_MAX)) + 1) * 150 - 75),
+                        10, 1, 0.5f));
+    }
+    //Plat jusqu'à la fin
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+8300, WORLD_SCENE_TOP_START_Y+500, 2000, 200));
 
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+100, WORLD_SCENE_TOP_START_Y);
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+100, WORLD_SCENE_BOT_START_Y);
 
     m_controller0 = new GameController(this,m_car1,m_car2,0);
     m_controller1 = new GameController(this,m_car2,m_car1,1);
-
 
     m_controller0 = new GameController(this,m_car1,m_car2,0);
     m_controller1 = new GameController(this,m_car2,m_car1,1);
