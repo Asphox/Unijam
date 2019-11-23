@@ -5,7 +5,7 @@
 #include "Car.h"
 
 
-Car::Car(Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint) {
+Car::Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint) {
     m_carTop = bodyTop;
     m_carBot = bodyBot;
     m_leftWheel = leftWheel;
@@ -58,3 +58,16 @@ void Car::decelerate(){
         }
     }
 }
+
+void Car::rotateLeft(float userValue) {
+    m_vehiclePhysicalBody->ApplyAngularImpulse(userValue * 100, false);
+}
+
+void Car::rotateRight(float userValue) {
+    m_vehiclePhysicalBody->ApplyAngularImpulse(-userValue * 100, false);
+}
+
+void Car::jump(){
+    m_vehiclePhysicalBody->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
+}
+
