@@ -17,16 +17,32 @@ Game::Game(sf::RenderWindow& window) : m_menu(this), m_world(-10.0f), m_scene(wi
 void Game::reset()
 {
     EntityFactory factory = EntityFactory();
-    factory.createBoxDynamic(m_world,400,400,380,20, 1, 1, 5);
-    m_boxsTop.push_back(factory.createBoxStatic(m_world,WORLD_SCENE_TOP_START_X,WORLD_SCENE_TOP_START_Y+500/2,1300,20));
-    m_boxsTop.push_back(factory.createBoxStatic(m_world,WORLD_SCENE_TOP_START_X+2000,WORLD_SCENE_TOP_START_Y+500/2,500,20));
-    m_boxsBot.push_back(factory.createBoxStatic(m_world,WORLD_SCENE_BOT_START_X,WORLD_SCENE_BOT_START_Y+500/2,3000,20));
-    m_boxsBot.push_back(factory.createBoxStatic(m_world,WORLD_SCENE_BOT_START_X+3400,WORLD_SCENE_BOT_START_Y+500/2,2500,20));
-    factory.createCircleDynamic(m_world, 500, 50, 10, 10, 1);
-    factory.createCircleDynamic(m_world, 300, 30, 10, 10, 1);
-    factory.createCircleDynamic(m_world, 680, 10, 10, 10, 1);
-    m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_TOP_START_Y+RELATIVE_CAR_SPAWN_Y);
-    m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y+RELATIVE_CAR_SPAWN_Y);
+    level1 = new Level();
+
+    //Ground level 1
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+5000/2, WORLD_SCENE_TOP_START_Y+500, 5000, 200));
+    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5000/2, WORLD_SCENE_BOT_START_Y+500, 5000, 200));
+
+    //Premier obstacle
+    level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+1000, WORLD_SCENE_TOP_START_Y+300, 200, 25));
+    level1->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+1000, WORLD_SCENE_BOT_START_Y+300, 200, 25));
+
+    //Second obstacle
+    std::vector<std::pair<float, float>> convex1Vertices;
+    convex1Vertices.push_back(std::pair<float,float>(-300,-25));
+    convex1Vertices.push_back(std::pair<float,float>(-50,25));
+    convex1Vertices.push_back(std::pair<float,float>(50,25));
+    convex1Vertices.push_back(std::pair<float,float>(300,-25));
+    level1->addEntityTop(factory.createConvexStatic(m_world, WORLD_SCENE_TOP_START_X+2500, WORLD_SCENE_TOP_START_Y+250, convex1Vertices));
+    level1->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+2500, WORLD_SCENE_BOT_START_Y+250, convex1Vertices));
+
+
+    m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+100, WORLD_SCENE_TOP_START_Y);
+    m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+100, WORLD_SCENE_BOT_START_Y);
+
+    m_controller0 = new GameController(this,m_car1,m_car2,0);
+    m_controller1 = new GameController(this,m_car2,m_car1,1);
+
 
     m_controller0 = new GameController(this,m_car1,m_car2,0);
     m_controller1 = new GameController(this,m_car2,m_car1,1);
@@ -73,21 +89,21 @@ void Game::updateGraphics()
         if( newSceneCenterX- m_scene.getCenterTopX() >= 0 )
             m_scene.newDefaultTopCenterX(newSceneCenterX);
         m_window.draw(*m_car1);
-        for(auto it : m_boxsTop)
-        {
-            m_window.draw(*it);
-        }
-        m_car2->update();
+
+        level1->drawTop(m_window);
+
         m_scene.selectBotScreenView();
+        m_car2->update();
         newSceneCenterX = WORLD_SCENE_BOT_START_X+m_window.getSize().x/2+(m_car2->getPosition().x-(WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X));
         if( newSceneCenterX- m_scene.getCenterBotX() >= 0 )
             m_scene.newDefaultBotCenterX(newSceneCenterX);
         m_window.draw(*m_car2);
-        for(auto it : m_boxsBot)
-        {
-            m_window.draw(*it);
-        }
+        level1->drawBot(m_window);
+
+
         m_window.draw(m_scene);
+        //m_window.draw(*m_box2);
+
 
         std::cout << m_car1->getPosition().y  << std::endl;
 

@@ -60,13 +60,10 @@ void Car::decelerate(float f){
     }
 }
 
-void Car::rotateLeft(float userValue) {
+void Car::rotate(float userValue){
     m_vehiclePhysicalBody->ApplyAngularImpulse(userValue * m_angularVelocityCoefficient, false);
 }
 
-void Car::rotateRight(float userValue) {
-    m_vehiclePhysicalBody->ApplyAngularImpulse(-userValue * m_angularVelocityCoefficient, false);
-}
 
 void Car::jump(){
     m_vehiclePhysicalBody->ApplyLinearImpulseToCenter(b2Vec2(0,m_jumpVerticalCoefficient), true);

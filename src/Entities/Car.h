@@ -35,6 +35,8 @@ public:
 
     void rotateRight(float userValue);
 
+
+    void rotate(float userValue);
     void jump();
 
     sf::Vector2f getPosition() const;

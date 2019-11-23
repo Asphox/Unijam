@@ -37,7 +37,7 @@ void GameController::processInput(sf::Event &event)
                     }
 
                 }
-            break;
+                break;
 
             case sf::Event::JoystickButtonPressed :
                 if( event.joystickButton.joystickId == m_playerID )
@@ -51,7 +51,7 @@ void GameController::processInput(sf::Event &event)
                     }
 
                 }
-            break;
+                break;
 
         }
     }
@@ -83,7 +83,7 @@ void GameController::onInclination(float pos)
     {
         if(m_car1)
         {
-            m_car1->rotateLeft(-pos);
+            m_car1->rotate(-pos);
         }
     }
 

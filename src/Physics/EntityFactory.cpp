@@ -28,13 +28,8 @@ Box* EntityFactory::createBox(World& world, float x, float y, float halfWidth, f
         fixtureDef.friction = friction;
         body->CreateFixture(&fixtureDef);
     }
-    //Here, the body is created
-    //Entity creation
-    Box* box = new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);
-    //Here, the entity is created
-    //We add the entity to the world list of entities
-    world.addEntity(box);
-    return box;
+
+    return new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);;
 }
 
 Box* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height) {
@@ -76,13 +71,8 @@ Circle* EntityFactory::createCircle(World &world, float x, float y, float r, flo
         fixtureDef.friction = friction;
         body->CreateFixture(&fixtureDef);
     }
-    //Here, the body is created
-    //Entity creation
-    Circle* circle = new Circle(body, x, y, r);
-    //Here, the entity is created
-    //We add the entity to the world list of entities
-    world.addEntity(circle);
-    return circle;
+
+    return new Circle(body, x, y, r);;
 }
 
 Circle* EntityFactory::createCircleStatic(World &world, float x, float y, float r) {
@@ -91,6 +81,58 @@ Circle* EntityFactory::createCircleStatic(World &world, float x, float y, float 
 
 Circle* EntityFactory::createCircleDynamic(World &world, float x, float y, float r, float density, float friction) {
     return createCircle(world, x, y, r, density, friction, false);
+}
+
+
+/** Convex **/
+Convex* EntityFactory::createConvex(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction, bool isStatic) {
+    //Body creation
+    b2BodyDef bodyDef;
+    if (!isStatic){
+        bodyDef.type = b2_dynamicBody;
+    }
+    bodyDef.position.Set(x, -y);
+    bodyDef.angle = a*3.14/180;
+
+    b2Vec2 verticesConvex[relativeVertices.size()];
+    int i = 0;
+    for (auto it : relativeVertices){
+        verticesConvex[i].Set(it.first, it.second);
+        i++;
+    }
+
+    b2PolygonShape convexShape;
+    convexShape.Set(verticesConvex, relativeVertices.size());
+
+    b2Body* body = world.getWorld().CreateBody(&bodyDef);
+    if (isStatic) {
+        body->CreateFixture(&convexShape, 0.0f);
+    } else {
+        b2FixtureDef fixtureDefConvex;
+        fixtureDefConvex.shape = &convexShape;
+        fixtureDefConvex.density = density;
+        fixtureDefConvex.friction = friction;
+        body->CreateFixture(&fixtureDefConvex);
+    }
+
+    return new Convex(body, x, y, a, relativeVertices);;
+}
+
+Convex* EntityFactory::createConvexStatic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices) {
+    return createConvex(world, x, y, a, relativeVertices, 0,0,true);
+}
+
+Convex* EntityFactory::createConvexStatic(World &world, float x, float y, std::vector<std::pair<float, float>>& relativeVertices) {
+    return createConvex(world, x, y, 0, relativeVertices, 0, 0, true);
+}
+
+Convex* EntityFactory::createConvexDynamic(World &world, float x, float y, float a, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction)
+{
+    return createConvex(world, x, y, a, relativeVertices, density, friction, false);
+}
+Convex* EntityFactory::createConvexDynamic(World &world, float x, float y, std::vector<std::pair<float, float>>& relativeVertices, float density, float friction)
+{
+    return createConvex(world, x, y, 0, relativeVertices, density, friction, false);
 }
 
 /** Car **/
@@ -179,10 +221,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f*size, y-16.0f*size, circ.m_radius);
     Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
     Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
-    Car* car = new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);
-    world.addEntity(car);
-
-    return car;
+    return new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);;
 }
 
 Car* EntityFactory::createCar(World &world, float x, float y) {

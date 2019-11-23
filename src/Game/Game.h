@@ -14,6 +14,7 @@
 #include "Physics/World.h"
 #include "Physics/EntityFactory.h"
 #include "System/Timer.h"
+#include "Entities/Level.h"
 
 class Game
 {
@@ -44,7 +45,8 @@ private:
     sf::Font m_font;
     GameMenu m_menu;
     GameScene m_scene;
-    GameController* m_controller0,*m_controller1;
+    GameController* m_controller0, *m_controller1;
+    Level* level1;
     World m_world;
     Car* m_car1,*m_car2;
     std::vector<Box*> m_boxsTop;
@@ -55,6 +57,8 @@ private:
 
     float getDeltaCarTopStartWithCurrent();
     float getDeltaCarBotStartWithCurrent();
+    Box* m_box1,*m_box2;
+    Convex* m_convex1;
 
 public:
     inline STATE getState() { return m_state; }
