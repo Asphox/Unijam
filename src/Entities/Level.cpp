@@ -4,8 +4,9 @@
 
 #include "Level.h"
 
-Level::Level()
+Level::Level(float distanceToWin)
 {
+    m_distanceToWin = distanceToWin;
 }
 
 void Level::addEntityTop(Entity* entity)
@@ -33,6 +34,7 @@ void Level::drawTop(sf::RenderWindow& window)
 {
     for (int i = 0; i < m_objects_top.size(); i++)
     {
+        m_objects_top[i]->update();
         window.draw(*m_objects_top[i]);
     }
 }
@@ -41,18 +43,11 @@ void Level::drawBot(sf::RenderWindow& window)
 {
     for (int i = 0; i < m_objects_bot.size(); i++)
     {
+        m_objects_bot[i]->update();
         window.draw(*m_objects_bot[i]);
     }
 }
 
-void Level::update()
-{
-    for (int i = 0; i < m_objects_top.size(); i++)
-    {
-        m_objects_top[i]->update();
-    }
-    for (int i = 0; i < m_objects_bot.size(); i++)
-    {
-        m_objects_bot[i]->update();
-    }
+float Level::getDistanceToWin() {
+    return m_distanceToWin;
 }

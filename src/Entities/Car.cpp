@@ -5,7 +5,7 @@
 #include "Car.h"
 
 
-Car::Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint) {
+Car::Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWheel, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint, b2WheelJoint* compensatingJoint1, b2WheelJoint* compensatingJoint2) {
     m_vehiclePhysicalBody = vehicleBody;
     m_carTop = bodyTop;
     m_carBot = bodyBot;
@@ -13,6 +13,8 @@ Car::Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWhee
     m_rightWheel = rightWheel;
     m_leftJoint = leftJoint;
     m_rightJoint = rightJoint;
+    m_compensatingJoint1 = compensatingJoint1;
+    m_compensatingJoint2 = compensatingJoint2;
 }
 
 void Car::update() {
@@ -36,12 +38,14 @@ void Car::accelerate(float f){
             m_leftJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
+    m_compensatingJoint1->SetMotorSpeed(-m_leftJoint->GetMotorSpeed());
     if (m_rightJoint->GetMotorSpeed() > -m_maxVelocity){
         m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() - m_linearVelocityIncrement);
         if (!(m_rightJoint->GetMotorSpeed() > -m_maxVelocity)) {
             m_rightJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
+    m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
 }
 
 void Car::decelerate(float f){
@@ -51,12 +55,14 @@ void Car::decelerate(float f){
             m_leftJoint->SetMotorSpeed(m_maxVelocity);
         }
     }
+    m_compensatingJoint1->SetMotorSpeed(-m_leftJoint->GetMotorSpeed());
     if (m_rightJoint->GetMotorSpeed() < m_maxVelocity){
         m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() + m_linearVelocityIncrement);
         if (!(m_rightJoint->GetMotorSpeed() < m_maxVelocity)) {
             m_rightJoint->SetMotorSpeed(m_maxVelocity);
         }
     }
+    m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
 }
 
 void Car::rotate(float userValue){

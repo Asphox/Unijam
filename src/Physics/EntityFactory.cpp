@@ -32,20 +32,20 @@ Box* EntityFactory::createBox(World& world, float x, float y, float halfWidth, f
     return new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);;
 }
 
-Box* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height) {
-    return createBox(world, x, y, width, height, 0, 0, 0, true);
+Box* EntityFactory::createBoxStatic(World& world, float x, float y, float halfWidth, float halfHeight) {
+    return createBox(world, x, y, halfWidth, halfHeight, 0, 0, 0, true);
 }
 
-Box* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height, float angle) {
-    return createBox(world, x, y, width, height, 0, 0, angle, true);
+Box* EntityFactory::createBoxStatic(World& world, float x, float y, float halfWidth, float halfHeight, float angle) {
+    return createBox(world, x, y, halfWidth, halfHeight, 0, 0, angle, true);
 }
 
-Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction) {
-    return createBox(world, x, y, width, height, density, friction, 0, false);
+Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction) {
+    return createBox(world, x, y, halfWidth, halfHeight, density, friction, 0, false);
 }
 
-Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction, float angle) {
-    return createBox(world, x, y, width, height, density, friction, angle, false);
+Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction, float angle) {
+    return createBox(world, x, y, halfWidth, halfHeight, density, friction, angle, false);
 }
 
 /** Circle **/
@@ -152,7 +152,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     b2FixtureDef fixtureDefPoly1;
     fixtureDefPoly1.filter.groupIndex = -1;
     fixtureDefPoly1.shape = &poly1;
-    fixtureDefPoly1.density	= 10.0f;
+    fixtureDefPoly1.density	= 20.0f;
     fixtureDefPoly1.friction = 0.68f;
 
     // top half
@@ -167,7 +167,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     b2FixtureDef fixtureDefPoly2;
     fixtureDefPoly2.filter.groupIndex = -1;
     fixtureDefPoly2.shape = &poly2;
-    fixtureDefPoly2.density	= 40.0f;
+    fixtureDefPoly2.density	= 20.0f;
     fixtureDefPoly2.friction = 0.68f;
 
     b2BodyDef vehicleBodyDef;
@@ -185,21 +185,34 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     circ.m_radius = 10*size;
     fixtureDefCirc.shape = &circ;
     fixtureDefCirc.density = 2.0f; //5
-    fixtureDefCirc.friction = 3.0f;
+    fixtureDefCirc.restitution = 1;
+    fixtureDefCirc.friction = 1.0f;
     fixtureDefCirc.filter.groupIndex = -1;
 
     b2BodyDef wheelBody;
     wheelBody.allowSleep = false;
     wheelBody.type = b2_dynamicBody;
-    wheelBody.position.Set(x-24.0f*size, -y-16.0f*size);
+    wheelBody.position.Set(x-25.0f*size, -y-22.0f*size);
+
     b2Body* rightWheel;
     rightWheel = world.getWorld().CreateBody(&wheelBody);
     rightWheel -> CreateFixture(&fixtureDefCirc);
 
-    wheelBody.position.Set(x+24.0f*size, -y-16.0f*size);
+    wheelBody.position.Set(x+30.0f*size, -y-22.0f*size);
     b2Body* leftWheel;
     leftWheel = world.getWorld().CreateBody(&wheelBody);
     leftWheel -> CreateFixture(&fixtureDefCirc);
+
+
+    wheelBody.position.Set(x, -y);
+    b2Body* compensatingWheel1;
+    compensatingWheel1 = world.getWorld().CreateBody(&wheelBody);
+    compensatingWheel1 -> CreateFixture(&fixtureDefCirc);
+
+    wheelBody.position.Set(x, -y);
+    b2Body* compensatingWheel2;
+    compensatingWheel2 = world.getWorld().CreateBody(&wheelBody);
+    compensatingWheel2 -> CreateFixture(&fixtureDefCirc);
 
     // join wheels to chassis
     b2WheelJointDef jd;
@@ -215,13 +228,24 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     b2WheelJoint* rightJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 
 
+    jd.Initialize(vehicleBody, compensatingWheel1, compensatingWheel1->GetWorldCenter(), b2Vec2(0,1));
+    jd.collideConnected = false;
+    b2WheelJoint* compensatingJoint1 = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
+
+    jd.Initialize(vehicleBody, compensatingWheel2, compensatingWheel2->GetWorldCenter(), b2Vec2(0,1));
+    jd.collideConnected = false;
+    b2WheelJoint* compensatingJoint2 = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
+
+
+
+
 
     // Encapsulation
     Circle* leftWheelCircle = new Circle(leftWheel, x+24.0f*size, y-16.0f*size, circ.m_radius);
     Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f*size, y-16.0f*size, circ.m_radius);
     Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
     Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
-    return new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);;
+    return new Car(vehicleBody, vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint, compensatingJoint1, compensatingJoint2);
 }
 
 Car* EntityFactory::createCar(World &world, float x, float y) {
