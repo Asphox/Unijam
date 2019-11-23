@@ -5,6 +5,8 @@
 
 #include "Tiers/Box2D/Box2D.h"
 
+#include "Game/GameScene/GameScene.h"
+
 
 int main()
 {
@@ -14,6 +16,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
     window.setFramerateLimit(600);
 
+    GameScene gameScene(window);
 
     while (window.isOpen())
     {
@@ -23,6 +26,7 @@ int main()
                 window.close();
         }
         window.clear();
+        window.draw(gameScene);
         window.display();
     }
 
