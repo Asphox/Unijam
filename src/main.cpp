@@ -17,7 +17,7 @@ int main()
     factory.createCircleDynamic(world, 500, 50, 10, 10, 1);
     factory.createCircleDynamic(world, 300, 30, 10, 10, 1);
     factory.createCircleDynamic(world, 680, 10, 10, 10, 1);
-    //Car* car1 = factory.createCar(world, 100, 300);
+    Car* car1 = factory.createCar(world, 100, 300);
     Car* car2 = factory.createCar(world, 700, 300);
     float32 timeStep = 1.0f / 60.0f;
 
@@ -34,9 +34,8 @@ int main()
 
         }
         world.step(timeStep);
-        //car1->accelerate();
+        car1->accelerate();
         car2->decelerate();
-        car2->rotateLeft(100);
         window.clear();
 
         for (Entity* entityIt : world.getEntities()){
