@@ -7,13 +7,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <Options.h>
-
+#include <Entities/Car.h>
 class Game;
 
 class GameController
 {
 public:
-    GameController(Game*,uint8_t playerID);
+    GameController(Game*,Car*,uint8_t playerID);
     void onAccelerate(float pos);
     void onDecelerate(float pos);
     void onInclination(float pos); //-100 <-> 100
@@ -30,6 +30,7 @@ private:
     bool m_xboxMode;
 
     Game* m_game;
+    Car* m_car;
 };
 
 

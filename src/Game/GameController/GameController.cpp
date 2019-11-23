@@ -5,7 +5,7 @@
 #include "GameController.h"
 #include "Game/Game.h"
 
-GameController::GameController(Game* game, uint8_t playerID) : m_game(game), m_playerID(playerID)
+GameController::GameController(Game* game, Car* car, uint8_t playerID) : m_game(game), m_car(car), m_playerID(playerID)
 {
     sf::Joystick::update();
     m_xboxMode = sf::Joystick::isConnected(playerID);
@@ -60,11 +60,13 @@ void GameController::processInput(sf::Event &event)
 
 void GameController::onInclination(float pos)
 {
+    if( m_game->getState() == Game::STATE::RUNNING )
     std::cout << m_playerID << "|" << pos << std::endl;
 }
 
 void GameController::onJump()
 {
+    if( m_game->getState() == Game::STATE::RUNNING )
     std::cout << m_playerID << "jump" << std::endl;
 }
 
@@ -80,10 +82,23 @@ void GameController::onQuit()
 
 void GameController::onDecelerate(float pos)
 {
-    std::cout << m_playerID << " decelerate" << "|" << pos << std::endl;
+    if( m_game->getState() == Game::STATE::RUNNING )
+    {
+        if(m_car)
+        {
+            std::cout << m_playerID << " decelerate" << "|" << pos << std::endl;
+            m_car->decelerate();
+        }
+    }
+
 }
 
 void GameController::onAccelerate(float pos)
 {
-    std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
+    if( m_game->getState() == Game::STATE::RUNNING )
+    {
+        if(m_car)
+            m_car->accelerate();
+        std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
+    }
 }

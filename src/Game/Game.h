@@ -24,7 +24,6 @@ public:
     inline sf::RenderWindow& getWindow(){ return m_window; }
     inline sf::Font& getFont(){ return m_font; }
 
-private:
     enum class STATE
     {
         MENU,
@@ -32,6 +31,7 @@ private:
         RUNNING
     }m_state = STATE::MENU;
 
+private:
     void update();
 
     void pollEvent();
@@ -40,10 +40,13 @@ private:
     sf::Font m_font;
     GameMenu m_menu;
     GameScene m_scene;
-    GameController m_controller0,m_controller1;
+    GameController* m_controller0,*m_controller1;
     World m_world;
     Car* m_car1,*m_car2;
     Box* m_box1,*m_box2;
+
+public:
+    inline STATE getState() { return m_state; }
 };
 
 

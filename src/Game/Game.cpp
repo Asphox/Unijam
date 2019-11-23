@@ -4,7 +4,7 @@
 
 #include "Game.h"
 
-Game::Game(sf::RenderWindow& window) : m_menu(this), m_controller0(this,0), m_controller1(this,1), m_world(-10.0f), m_scene(window), m_window(window)
+Game::Game(sf::RenderWindow& window) : m_menu(this), m_world(-10.0f), m_scene(window), m_window(window)
 {
     m_state = STATE::MENU;
     if( !m_font.loadFromFile("Assets/Arial.ttf") )
@@ -25,6 +25,9 @@ void Game::run()
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+100, WORLD_SCENE_TOP_START_Y);
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+100, WORLD_SCENE_BOT_START_Y);
 
+    m_controller0 = new GameController(this,m_car1,0);
+    m_controller1 = new GameController(this,m_car2,1);
+
 
 
     while (m_window.isOpen())
@@ -41,9 +44,8 @@ void Game::pollEvent()
     {
         if (event.type == sf::Event::Closed)
             m_window.close();
-
-        m_controller0.processInput(event);
-        m_controller1.processInput(event);
+        m_controller0->processInput(event);
+        m_controller1->processInput(event);
     }
 }
 
