@@ -109,7 +109,7 @@ Baumgarte method in performance critical scenarios.
 /*
 Cache Performance
 
-The Box2D solvers are dominated by cache misses. Data structures are designed
+The World solvers are dominated by cache misses. Data structures are designed
 to increase the number of cache hits. Much of misses are due to random access
 to body data. The constraint structures are iterated over linearly, which leads
 to few cache misses.

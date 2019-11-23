@@ -29,7 +29,7 @@ For documentation please see http://box2d.org/documentation.html
 For discussion please visit http://box2d.org/forum
 */
 
-// These include files constitute the main Box2D API
+// These include files constitute the main World API
 
 #include "Common/b2Settings.h"
 #include "Common/b2Draw.h"
