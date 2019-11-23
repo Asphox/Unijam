@@ -1,34 +1,30 @@
 #include <SFML/Graphics.hpp>
 #include "Graphics/AnimatedSprite.h"
 #include "System/Timer.h"
-#include "System/Thread.h"
-
-#include "Tiers/Box2D/Box2D.h"
+#include "Physics/World.h"
+#include "Physics/EntityFactory.h"
 
 #include "Game/Game.h"
 
 
 int main()
 {
-    b2Vec2 gravity(0.0f, -10.0f);
-    b2World world(gravity);
+    World world = World(-10.0f);
+    EntityFactory factory = EntityFactory();
+    factory.createBoxDynamic(world,400,400,380,20, 1, 1, 5);
+    factory.createBoxStatic(world,175,600,50,20);
+    factory.createBoxStatic(world,800-175,600,50,20);
+    factory.createCircleDynamic(world, 500, 50, 10, 10, 1);
+    factory.createCircleDynamic(world, 300, 30, 10, 10, 1);
+    factory.createCircleDynamic(world, 680, 10, 10, 10, 1);
+    Car* car1 = factory.createCar(world, 100, 300);
+    Car* car2 = factory.createCar(world, 700, 300);
+    float32 timeStep = 1.0f / 60.0f;
+
     std::cout.sync_with_stdio(false);
-    sf::RenderWindow window(sf::VideoMode(1600, 720), "SFML works!");
 
-    Game game(window);
-
-    game.run();
-
-    //window.setFramerateLimit(60);
-/*
-    float z = 1.0f;
-
-    GameScene gameScene(window);
-    GameController gameController_0(nullptr,0);
-    GameController gameController_1(nullptr,1);
-
-
-
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+    window.setFramerateLimit(600);
     while (window.isOpen())
     {
         sf::Event event;
@@ -36,47 +32,20 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if( event.type == sf::Event::KeyPressed)
-            {
-                if( event.key.code == sf::Keyboard::PageUp )
-                {
-                    z += 0.1;
-                    gameScene.setZoomBotScreen(z);
-                }
-                if( event.key.code == sf::Keyboard::PageDown )
-                {
-                    z -= 0.1;
-                    gameScene.setZoomBotScreen(z);
-                }
-                if( event.key.code == sf::Keyboard::Left )
-                {
-                    gameScene.translateLeftBotScreen(10);
-                }
-                if( event.key.code == sf::Keyboard::Right )
-                {
-                    gameScene.translateRightBotScreen(10);
-                }
-                if( event.key.code == sf::Keyboard::Up )
-                {
-                    gameScene.translateUpBotScreen(10);
-                }
-                if( event.key.code == sf::Keyboard::Down )
-                {
-                    gameScene.translateDownBotScreen(10);
-                }
-            }
-
-            gameController_0.processInput(event);
-            gameController_1.processInput(event);
         }
+        world.step(timeStep);
+        car1->accelerate();
+        car2->decelerate();
         window.clear();
-        window.draw(gameScene);
+
+        for (Entity* entityIt : world.getEntities()){
+            entityIt->update();
+            window.draw(*entityIt);
+        }
         window.display();
 
-        //gameScene.translateLeftBotScreen(0.1);
-        //gameScene.translateRightTopScreen(0.1);
     }
-    */
+
 
     return 0;
 }
