@@ -3,10 +3,9 @@
 //
 
 #include "EntityFactory.h"
-#include "Convex.h"
 
 /** Box **/
-Entity* EntityFactory::createBox(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction, float angle, bool isStatic) {
+Box* EntityFactory::createBox(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction, float angle, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
     if (!isStatic){
@@ -31,31 +30,31 @@ Entity* EntityFactory::createBox(World& world, float x, float y, float halfWidth
     }
     //Here, the body is created
     //Entity creation
-    Entity* box = new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);
+    Box* box = new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);
     //Here, the entity is created
     //We add the entity to the world list of entities
     world.addEntity(box);
     return box;
 }
 
-Entity* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height) {
+Box* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height) {
     return createBox(world, x, y, width, height, 0, 0, 0, true);
 }
 
-Entity* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height, float angle) {
+Box* EntityFactory::createBoxStatic(World& world, float x, float y, float width, float height, float angle) {
     return createBox(world, x, y, width, height, 0, 0, angle, true);
 }
 
-Entity* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction) {
+Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction) {
     return createBox(world, x, y, width, height, density, friction, 0, false);
 }
 
-Entity* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction, float angle) {
+Box* EntityFactory::createBoxDynamic(World& world, float x, float y, float width, float height, float density, float friction, float angle) {
     return createBox(world, x, y, width, height, density, friction, angle, false);
 }
 
 /** Circle **/
-Entity* EntityFactory::createCircle(World &world, float x, float y, float r, float density, float friction, bool isStatic) {
+Circle* EntityFactory::createCircle(World &world, float x, float y, float r, float density, float friction, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
     if (!isStatic){
@@ -79,105 +78,109 @@ Entity* EntityFactory::createCircle(World &world, float x, float y, float r, flo
     }
     //Here, the body is created
     //Entity creation
-    Entity* circle = new Circle(body, x, y, r);
+    Circle* circle = new Circle(body, x, y, r);
     //Here, the entity is created
     //We add the entity to the world list of entities
     world.addEntity(circle);
     return circle;
 }
 
-Entity* EntityFactory::createCircleStatic(World &world, float x, float y, float r) {
+Circle* EntityFactory::createCircleStatic(World &world, float x, float y, float r) {
     return createCircle(world, x, y, r, 0, 0, true);
 }
 
-Entity *EntityFactory::createCircleDynamic(World &world, float x, float y, float r, float density, float friction) {
+Circle* EntityFactory::createCircleDynamic(World &world, float x, float y, float r, float density, float friction) {
     return createCircle(world, x, y, r, density, friction, false);
 }
 
-Entity *EntityFactory::createCar(World &world, float x, float y) {
+/** Car **/
+Car* EntityFactory::createCar(World &world, float x, float y) {
     // car body
     b2Vec2 verticesPoly1[5];
     int32 countPoly1 = 5;
 
     // bottom half
-    verticesPoly1[4].Set(-22.0f,-7.4f);
-    verticesPoly1[3].Set(-22.0f,0);
-    verticesPoly1[2].Set(10.0f,0);
-    verticesPoly1[1].Set(22.0f,-2.0f);
-    verticesPoly1[0].Set(22.0f,-7.4f);
+    verticesPoly1[4].Set(-44.0f,-14.8f);
+    verticesPoly1[3].Set(-44.0f,0);
+    verticesPoly1[2].Set(20.0f,0);
+    verticesPoly1[1].Set(44.0f,-4.0f);
+    verticesPoly1[0].Set(44.0f,-14.8f);
     b2PolygonShape poly1;
     poly1.Set(verticesPoly1, countPoly1);
     b2FixtureDef fixtureDefPoly1;
     fixtureDefPoly1.filter.groupIndex = -1;
     fixtureDefPoly1.shape = &poly1;
-    fixtureDefPoly1.density	= 2.0f;
+    fixtureDefPoly1.density	= 10.0f;
     fixtureDefPoly1.friction = 0.68f;
 
     // top half
     b2Vec2 verticesPoly2[4];
     int32 countPoly2 = 4;
-    verticesPoly2[3].Set(-17.0f,0);
-    verticesPoly2[2].Set(-13.0f,7.0f);
-    verticesPoly2[1].Set(5.0f,7.4f);
-    verticesPoly2[0].Set(10.0f,0);
+    verticesPoly2[3].Set(-34.0f,0);
+    verticesPoly2[2].Set(-26.0f,14.0f);
+    verticesPoly2[1].Set(10.0f,14.8f);
+    verticesPoly2[0].Set(20.0f,0);
     b2PolygonShape poly2;
     poly2.Set(verticesPoly2, countPoly2);
     b2FixtureDef fixtureDefPoly2;
     fixtureDefPoly2.filter.groupIndex = -1;
     fixtureDefPoly2.shape = &poly2;
-    fixtureDefPoly2.density	= 5.0f;
+    fixtureDefPoly2.density	= 40.0f;
     fixtureDefPoly2.friction = 0.68f;
 
     b2BodyDef vehicleBodyDef;
     vehicleBodyDef.type = b2_dynamicBody;
-    vehicleBodyDef.position.Set(x, y);
+    vehicleBodyDef.position.Set(x, -y);
 
     b2Body* vehicleBody;
     vehicleBody = world.getWorld().CreateBody(&vehicleBodyDef);
     vehicleBody->CreateFixture(&fixtureDefPoly1);
     vehicleBody->CreateFixture(&fixtureDefPoly2);
 
-    Entity* vehiclePoly1Entity = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
-    world.addEntity(vehiclePoly1Entity);
-    Entity* vehiclePoly2Entity = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
-    world.addEntity(vehiclePoly2Entity);
-
     // vehicle wheels
     b2CircleShape circ;
     b2FixtureDef fixtureDefCirc;
-    circ.m_radius = 5;
+    circ.m_radius = 10;
     fixtureDefCirc.shape = &circ;
-    fixtureDefCirc.density = 10.0f;
+    fixtureDefCirc.density = 5.0f;
     fixtureDefCirc.friction = 0.9f;
     fixtureDefCirc.filter.groupIndex = -1;
 
     b2BodyDef wheelBody;
     wheelBody.allowSleep = false;
     wheelBody.type = b2_dynamicBody;
-    wheelBody.position.Set(x-12.0f, y-8.0f);
+    wheelBody.position.Set(x-24.0f, -y-16.0f);
     b2Body* rightWheel;
     rightWheel = world.getWorld().CreateBody(&wheelBody);
     rightWheel -> CreateFixture(&fixtureDefCirc);
-    Entity* rightWheelCircleEntity = new Circle(rightWheel, x-12.0f, y-8.0f, circ.m_radius);
-    world.addEntity(rightWheelCircleEntity);
 
-    wheelBody.position.Set(x+12.0f, y-8.0f);
+    wheelBody.position.Set(x+24.0f, -y-16.0f);
     b2Body* leftWheel;
     leftWheel = world.getWorld().CreateBody(&wheelBody);
     leftWheel -> CreateFixture(&fixtureDefCirc);
-    Entity* leftWheelCircleEntity = new Circle(leftWheel, x+12.0f, y-8.0f, circ.m_radius);
-    world.addEntity(leftWheelCircleEntity);
 
     // join wheels to chassis
     b2WheelJointDef jd;
-    jd.Initialize(vehicleBody, leftWheel, leftWheel->GetWorldCenter(), b2Vec2(0,-1));
+    jd.Initialize(vehicleBody, leftWheel, leftWheel->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     jd.enableMotor = true;
-    jd.maxMotorTorque = 1000.0f;
-    jd.motorSpeed = -50.0f;
-    b2RevoluteJoint* leftJoint = (b2RevoluteJoint*)world.getWorld().CreateJoint(&jd);
+    jd.maxMotorTorque = 1000000.0f;
+    jd.motorSpeed = 0.0f;
+    b2WheelJoint* leftJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 
-    jd.Initialize(vehicleBody, rightWheel, rightWheel->GetWorldCenter(), b2Vec2(0,-1));
+    jd.Initialize(vehicleBody, rightWheel, rightWheel->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
-    b2RevoluteJoint* rightJoint = (b2RevoluteJoint*)world.getWorld().CreateJoint(&jd);
+    b2WheelJoint* rightJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
+
+
+
+    // Encapsulation
+    Circle* leftWheelCircle = new Circle(leftWheel, x+24.0f, y-16.0f, circ.m_radius);
+    Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f, y-16.0f, circ.m_radius);
+    Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
+    Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
+    Car* car = new Car(vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);
+    world.addEntity(car);
+
+    return car;
 }
