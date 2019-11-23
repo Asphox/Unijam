@@ -13,6 +13,5 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1600, 720), "SFML works!");
     Game game(window);
     game.run();
-
     return 0;
 }

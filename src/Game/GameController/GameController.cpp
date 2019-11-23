@@ -61,13 +61,22 @@ void GameController::processInput(sf::Event &event)
 void GameController::onInclination(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
-    std::cout << m_playerID << "|" << pos << std::endl;
+    {
+        if(m_car)
+        {
+            m_car->rotateLeft(-pos);
+        }
+    }
+
 }
 
 void GameController::onJump()
 {
     if( m_game->getState() == Game::STATE::RUNNING )
-    std::cout << m_playerID << "jump" << std::endl;
+    {
+        if(m_car)
+            m_car->jump();
+    }
 }
 
 void GameController::onPause()
