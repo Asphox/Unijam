@@ -31,9 +31,15 @@ void Car::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 void Car::accelerate(){
     if (m_leftJoint->GetMotorSpeed() > -m_maxSpeed){
         m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() - m_incrementingStep);
+        if (!m_leftJoint->GetMotorSpeed() > -m_maxSpeed) {
+            m_leftJoint->SetMotorSpeed(-m_maxSpeed);
+        }
     }
     if (m_rightJoint->GetMotorSpeed() > -m_maxSpeed){
         m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() - m_incrementingStep);
+        if (!m_rightJoint->GetMotorSpeed() > -m_maxSpeed) {
+            m_rightJoint->SetMotorSpeed(-m_maxSpeed);
+        }
     }
     printf("right: %f\n", m_rightJoint->GetMotorSpeed());
 }
@@ -41,8 +47,14 @@ void Car::accelerate(){
 void Car::decelerate(){
     if (m_leftJoint->GetMotorSpeed() < m_maxSpeed){
         m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() + m_incrementingStep);
+        if (!m_leftJoint->GetMotorSpeed() < m_maxSpeed) {
+            m_leftJoint->SetMotorSpeed(m_maxSpeed);
+        }
     }
     if (m_rightJoint->GetMotorSpeed() < m_maxSpeed){
         m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() + m_incrementingStep);
+        if (!m_rightJoint->GetMotorSpeed() < m_maxSpeed) {
+            m_rightJoint->SetMotorSpeed(m_maxSpeed);
+        }
     }
 }

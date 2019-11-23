@@ -24,6 +24,7 @@ public:
     Circle* createCircleStatic(World& world, float x, float y, float r);
     Circle* createCircleDynamic(World& world, float x, float y, float r, float density, float friction);
     Car* createCar(World& world, float x, float y);
+    Car* createCar(World& world, float x, float y, float size);
 };
 
 

@@ -17,7 +17,7 @@ private:
     b2WheelJoint* m_leftJoint;
     b2WheelJoint* m_rightJoint;
 
-    float m_maxSpeed = 20;
+    float m_maxSpeed = 10;
     float m_incrementingStep = 0.05;
 
 

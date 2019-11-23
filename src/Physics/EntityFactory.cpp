@@ -94,17 +94,17 @@ Circle* EntityFactory::createCircleDynamic(World &world, float x, float y, float
 }
 
 /** Car **/
-Car* EntityFactory::createCar(World &world, float x, float y) {
+Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     // car body
     b2Vec2 verticesPoly1[5];
     int32 countPoly1 = 5;
 
     // bottom half
-    verticesPoly1[4].Set(-44.0f,-14.8f);
-    verticesPoly1[3].Set(-44.0f,0);
-    verticesPoly1[2].Set(20.0f,0);
-    verticesPoly1[1].Set(44.0f,-4.0f);
-    verticesPoly1[0].Set(44.0f,-14.8f);
+    verticesPoly1[4].Set(-44.0f*size,-14.8f*size);
+    verticesPoly1[3].Set(-44.0f*size,0*size);
+    verticesPoly1[2].Set(20.0f*size,0*size);
+    verticesPoly1[1].Set(44.0f*size,-4.0f*size);
+    verticesPoly1[0].Set(44.0f*size,-14.8f*size);
     b2PolygonShape poly1;
     poly1.Set(verticesPoly1, countPoly1);
     b2FixtureDef fixtureDefPoly1;
@@ -116,10 +116,10 @@ Car* EntityFactory::createCar(World &world, float x, float y) {
     // top half
     b2Vec2 verticesPoly2[4];
     int32 countPoly2 = 4;
-    verticesPoly2[3].Set(-34.0f,0);
-    verticesPoly2[2].Set(-26.0f,14.0f);
-    verticesPoly2[1].Set(10.0f,14.8f);
-    verticesPoly2[0].Set(20.0f,0);
+    verticesPoly2[3].Set(-34.0f*size,0*size);
+    verticesPoly2[2].Set(-26.0f*size,14.0f*size);
+    verticesPoly2[1].Set(10.0f*size,14.8f*size);
+    verticesPoly2[0].Set(20.0f*size,0*size);
     b2PolygonShape poly2;
     poly2.Set(verticesPoly2, countPoly2);
     b2FixtureDef fixtureDefPoly2;
@@ -140,7 +140,7 @@ Car* EntityFactory::createCar(World &world, float x, float y) {
     // vehicle wheels
     b2CircleShape circ;
     b2FixtureDef fixtureDefCirc;
-    circ.m_radius = 10;
+    circ.m_radius = 10*size;
     fixtureDefCirc.shape = &circ;
     fixtureDefCirc.density = 5.0f;
     fixtureDefCirc.friction = 0.9f;
@@ -149,12 +149,12 @@ Car* EntityFactory::createCar(World &world, float x, float y) {
     b2BodyDef wheelBody;
     wheelBody.allowSleep = false;
     wheelBody.type = b2_dynamicBody;
-    wheelBody.position.Set(x-24.0f, -y-16.0f);
+    wheelBody.position.Set(x-24.0f*size, -y-16.0f*size);
     b2Body* rightWheel;
     rightWheel = world.getWorld().CreateBody(&wheelBody);
     rightWheel -> CreateFixture(&fixtureDefCirc);
 
-    wheelBody.position.Set(x+24.0f, -y-16.0f);
+    wheelBody.position.Set(x+24.0f*size, -y-16.0f*size);
     b2Body* leftWheel;
     leftWheel = world.getWorld().CreateBody(&wheelBody);
     leftWheel -> CreateFixture(&fixtureDefCirc);
@@ -164,7 +164,7 @@ Car* EntityFactory::createCar(World &world, float x, float y) {
     jd.Initialize(vehicleBody, leftWheel, leftWheel->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     jd.enableMotor = true;
-    jd.maxMotorTorque = 1000000.0f;
+    jd.maxMotorTorque = 100000.0f*size;
     jd.motorSpeed = 0.0f;
     b2WheelJoint* leftJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 
@@ -175,12 +175,16 @@ Car* EntityFactory::createCar(World &world, float x, float y) {
 
 
     // Encapsulation
-    Circle* leftWheelCircle = new Circle(leftWheel, x+24.0f, y-16.0f, circ.m_radius);
-    Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f, y-16.0f, circ.m_radius);
+    Circle* leftWheelCircle = new Circle(leftWheel, x+24.0f*size, y-16.0f*size, circ.m_radius);
+    Circle* rightWheelCircle = new Circle(rightWheel, x-24.0f*size, y-16.0f*size, circ.m_radius);
     Convex* vehicleConvex1 = new Convex(vehicleBody, x, y, 0, verticesPoly1, countPoly1);
     Convex* vehicleConvex2 = new Convex(vehicleBody, x, y, 0, verticesPoly2, countPoly2);
     Car* car = new Car(vehicleConvex1, vehicleConvex2, leftWheelCircle, rightWheelCircle, leftJoint, rightJoint);
     world.addEntity(car);
 
     return car;
+}
+
+Car* EntityFactory::createCar(World &world, float x, float y) {
+    return createCar(world, x, y, 1);
 }
