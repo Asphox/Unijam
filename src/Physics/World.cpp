@@ -25,6 +25,10 @@ void World::addEntity(Entity* entity) {
     m_entities.push_back(entity);
 }
 
-b2World &World::getWorld() {
+b2World& World::getWorld() {
     return m_world;
+}
+
+void World::step(float deltaTime) {
+    m_world.Step(deltaTime, 6, 2);
 }

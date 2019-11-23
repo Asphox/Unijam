@@ -7,13 +7,16 @@
 #include "Circle.h"
 
 /** Box **/
-Entity* EntityFactory::createBox(World& world, float x, float y, float width, float height, float density, float friction, float angle, bool isStatic) {
+Entity* EntityFactory::createBox(World& world, float x, float y, float halfWidth, float halfHeight, float density, float friction, float angle, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
+    if (!isStatic){
+        bodyDef.type = b2_dynamicBody;
+    }
     bodyDef.position.Set(x, -y);
 
     b2PolygonShape boxShape;
-    boxShape.SetAsBox(width*2, height*2);
+    boxShape.SetAsBox(halfWidth, halfHeight);
 
     b2Body* body = world.getWorld().CreateBody(&bodyDef);
 
@@ -28,7 +31,7 @@ Entity* EntityFactory::createBox(World& world, float x, float y, float width, fl
     }
     //Here, the body is created
     //Entity creation
-    Entity* box = new Box(body, x, y, width*2, height*2, angle*3.14/180);
+    Entity* box = new Box(body, x, y, halfWidth*2, halfHeight*2, angle*3.14/180);
     //Here, the entity is created
     //We add the entity to the world list of entities
     world.addEntity(box);
@@ -55,6 +58,9 @@ Entity* EntityFactory::createBoxDynamic(World& world, float x, float y, float wi
 Entity* EntityFactory::createCircle(World &world, float x, float y, float r, float density, float friction, bool isStatic) {
     //Body creation
     b2BodyDef bodyDef;
+    if (!isStatic){
+        bodyDef.type = b2_dynamicBody;
+    }
     bodyDef.position.Set(x, -y);
 
     b2CircleShape circleShape;

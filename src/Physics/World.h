@@ -21,6 +21,7 @@ public:
     std::vector<Entity*>& getEntities();
     b2World& getWorld();
     void addEntity(Entity* entity);
+    void step(float deltaTime);
 };
 
 

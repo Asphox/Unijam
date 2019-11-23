@@ -19,7 +19,7 @@ Box::~Box() {
 
 void Box::update() {
     m_rectangle.setPosition(m_body->GetPosition().x, -m_body->GetPosition().y);
-    m_rectangle.setRotation(m_body->GetAngle());
+    m_rectangle.setRotation(-m_body->GetAngle()*180/3.14);
 }
 
 void Box::draw(sf::RenderTarget& target, sf::RenderStates states) const {
