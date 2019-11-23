@@ -17,5 +17,12 @@ void World::step(float deltaTime) {
 }
 
 void World::clear(){
-    m_world.Dump();
+    b2Joint* jointList = m_world.GetJointList();
+    for (int i = 0; i < m_world.GetJointCount(); i++){
+        m_world.DestroyJoint(&jointList[i]);
+    }
+    b2Body* bodyList = m_world.GetBodyList();
+    for (int i = 0; i < m_world.GetBodyCount(); i++){
+        m_world.DestroyBody(&bodyList[i]);
+    }
 }
