@@ -24,7 +24,12 @@ GameScene::GameScene(sf::RenderWindow& window)
     m_test.setSize(sf::Vector2f(100,50));
     m_test.setPosition(WORLD_SCENE_TOP_START_X,WORLD_SCENE_TOP_START_Y+m_viewTop.getSize().y-50);
     m_test2.setSize(sf::Vector2f(100,50));
-    m_test2.setPosition(WORLD_SCENE_BOT_START_X,WORLD_SCENE_BOT_START_Y);
+    m_test2.setPosition(WORLD_SCENE_BOT_START_X,WORLD_SCENE_BOT_START_Y+m_viewTop.getSize().y-50);
+
+    m_splitScreenSeparation.setSize(sf::Vector2f(window.getSize().x,GAMESCENE_SEPARATION_SPLITSCREEN_RATIO*window.getSize().y) );
+    m_splitScreenSeparation.setOrigin(m_splitScreenSeparation.getSize().x/2,m_splitScreenSeparation.getSize().y/2);
+    m_splitScreenSeparation.setPosition(window.getSize().x/2,window.getSize().y/2);
+    m_splitScreenSeparation.setFillColor(sf::Color::Cyan);
 }
 
 void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -34,6 +39,9 @@ void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     target.setView(m_viewBot);
     target.draw(m_test2);
+
+    target.setView(target.getDefaultView());
+    target.draw(m_splitScreenSeparation);
 }
 
 void GameScene::translateLeftTopScreen(float move)
@@ -56,30 +64,47 @@ void GameScene::translateRightBotScreen(float move)
     m_viewBot.move(move,0);
 }
 
-#include <iostream>
+void GameScene::translateUpTopScreen(float move)
+{
+    m_viewTop.move(0,-move);
+}
+
+void GameScene::translateDownTopScreen(float move)
+{
+    m_viewTop.move(0,move);
+}
+
+void GameScene::translateUpBotScreen(float move)
+{
+    m_viewBot.move(0,-move);
+}
+
+void GameScene::translateDownBotScreen(float move)
+{
+    m_viewBot.move(0,move);
+}
+
 
 void GameScene::setZoomTopScreen(float zoom)
 {
+    if( zoom > TOPVIEW_MAX_ZOOM ) zoom = TOPVIEW_MAX_ZOOM;
+    else if( zoom < TOPVIEW_MIN_ZOOM ) zoom = TOPVIEW_MIN_ZOOM;
     zoom = 1/zoom;
-    std::cout << m_viewTop.getCenter().x  <<"|" << m_viewTop.getCenter().y << std::endl;
     resetZoomTopScreen();
-    std::cout << m_viewTop.getCenter().x  <<"|" << m_viewTop.getCenter().y << std::endl;
     m_currentZoomTop = zoom;
     m_viewTop.setSize(zoom*m_defaultViewSize.x,zoom*m_defaultViewSize.y);
     m_viewTop.setCenter(m_viewTop.getCenter().x+(zoom-1)*m_defaultViewSize.x/2.0f,m_viewTop.getCenter().y-(zoom-1)*m_defaultViewSize.y/2.0f);
-    std::cout << m_viewTop.getCenter().x  <<"|" << m_viewTop.getCenter().y << std::endl;
 }
 
 void GameScene::setZoomBotScreen(float zoom)
 {
+    if( zoom > BOTVIEW_MAX_ZOOM ) zoom = BOTVIEW_MAX_ZOOM;
+    else if( zoom < BOTVIEW_MIN_ZOOM ) zoom = BOTVIEW_MIN_ZOOM;
     zoom = 1/zoom;
-    std::cout << m_viewBot.getCenter().x  <<"|" << m_viewBot.getCenter().y << std::endl;
     resetZoomBotScreen();
-    std::cout << m_viewBot.getCenter().x  <<"|" << m_viewBot.getCenter().y << std::endl;
     m_currentZoomBot = zoom;
     m_viewBot.setSize(zoom*m_defaultViewSize.x,zoom*m_defaultViewSize.y);
     m_viewBot.setCenter(m_viewBot.getCenter().x+(zoom-1)*m_defaultViewSize.x/2.0f,m_viewBot.getCenter().y-(zoom-1)*m_defaultViewSize.y/2.0f);
-    std::cout << m_viewBot.getCenter().x  <<"|" << m_viewBot.getCenter().y << std::endl;
 }
 
 void GameScene::resetZoomTopScreen()
