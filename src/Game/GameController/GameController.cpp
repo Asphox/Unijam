@@ -5,7 +5,7 @@
 #include "GameController.h"
 #include "Game/Game.h"
 
-GameController::GameController(Game* game, Car* car, uint8_t playerID) : m_game(game), m_car(car), m_playerID(playerID)
+GameController::GameController(Game* game, Car* car1, Car* car2, uint8_t playerID) : m_game(game), m_car1(car1), m_car2(car2), m_playerID(playerID)
 {
     sf::Joystick::update();
     m_xboxMode = sf::Joystick::isConnected(playerID);
@@ -58,13 +58,32 @@ void GameController::processInput(sf::Event &event)
     i++;
 }
 
+void GameController::perpetualCheck()
+{
+    if( m_game->getState() == Game::STATE::RUNNING && m_xboxMode )
+    {
+        onInclination(sf::Joystick::getAxisPosition(m_playerID, sf::Joystick::X));
+        float acc = (sf::Joystick::getAxisPosition(m_playerID, sf::Joystick::R)+100.0)/2.0;
+        if( acc > 10 )
+        {
+            //onAccelerate(acc);
+        }
+        float dec = (sf::Joystick::getAxisPosition(m_playerID, sf::Joystick::Z)+100.0)/2.0;
+        if( dec > 10 )
+        {
+            onDecelerate(dec);
+            std::cout << dec << std::endl;
+        }
+    }
+}
+
 void GameController::onInclination(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car)
+        if(m_car1)
         {
-            m_car->rotateLeft(-pos);
+            m_car1->rotateLeft(-pos);
         }
     }
 
@@ -74,8 +93,8 @@ void GameController::onJump()
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car)
-            m_car->jump();
+        if(m_car1)
+            m_car1->jump();
     }
 }
 
@@ -93,10 +112,14 @@ void GameController::onDecelerate(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car)
+        if(m_car1)
         {
             std::cout << m_playerID << " decelerate" << "|" << pos << std::endl;
-            m_car->decelerate();
+            m_car1->decelerate(pos);
+        }
+        if(m_car2)
+        {
+            m_car2->accelerate(pos);
         }
     }
 
@@ -106,8 +129,10 @@ void GameController::onAccelerate(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car)
-            m_car->accelerate();
+        if(m_car1)
+            m_car1->accelerate(pos);
+        if(m_car2)
+            m_car2->decelerate(pos);
         std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
     }
 }

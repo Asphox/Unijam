@@ -13,6 +13,7 @@
 #include "Entities/Car.h"
 #include "Physics/World.h"
 #include "Physics/EntityFactory.h"
+#include "System/Timer.h"
 
 class Game
 {
@@ -32,9 +33,12 @@ public:
     }m_state = STATE::MENU;
 
 private:
-    void update();
+    void updateGraphics();
+    void updatePhysics();
 
     void pollEvent();
+
+    void reset();
 
     sf::RenderWindow& m_window;
     sf::Font m_font;
@@ -43,7 +47,14 @@ private:
     GameController* m_controller0,*m_controller1;
     World m_world;
     Car* m_car1,*m_car2;
-    Box* m_box1,*m_box2;
+    std::vector<Box*> m_boxsTop;
+    std::vector<Box*> m_boxsBot;
+    //Box* m_box1,*m_box2;
+
+    Timer<Game> physicsTimer;
+
+    float getDeltaCarTopStartWithCurrent();
+    float getDeltaCarBotStartWithCurrent();
 
 public:
     inline STATE getState() { return m_state; }

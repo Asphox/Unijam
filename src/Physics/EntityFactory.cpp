@@ -142,8 +142,8 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     b2FixtureDef fixtureDefCirc;
     circ.m_radius = 10*size;
     fixtureDefCirc.shape = &circ;
-    fixtureDefCirc.density = 5.0f;
-    fixtureDefCirc.friction = 0.9f;
+    fixtureDefCirc.density = 2.0f; //5
+    fixtureDefCirc.friction = 3.0f;
     fixtureDefCirc.filter.groupIndex = -1;
 
     b2BodyDef wheelBody;
@@ -164,7 +164,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     jd.Initialize(vehicleBody, leftWheel, leftWheel->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     jd.enableMotor = true;
-    jd.maxMotorTorque = 100000.0f*size;
+    jd.maxMotorTorque = 1000000.0f*size;
     jd.motorSpeed = 0.0f;
     b2WheelJoint* leftJoint = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
 

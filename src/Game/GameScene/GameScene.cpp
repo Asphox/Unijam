@@ -33,6 +33,16 @@ void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_splitScreenSeparation);
 }
 
+void GameScene::newDefaultTopCenterX(float x)
+{
+    m_viewTop.setCenter(x,m_viewTop.getCenter().y);
+}
+
+void GameScene::newDefaultBotCenterX(float x)
+{
+    m_viewBot.setCenter(x,m_viewBot.getCenter().y);
+}
+
 void GameScene::translateLeftTopScreen(float move)
 {
     m_viewTop.move(-move,0);

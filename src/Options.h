@@ -32,5 +32,9 @@ constexpr uint8_t XBOXC_BUTTON_START_ID = 7;
 constexpr float   PHY_TIME_STEP = 1.0f / 60.0f;
 
 
+constexpr float RELATIVE_CAR_SPAWN_X = 100;
+constexpr float RELATIVE_CAR_SPAWN_Y = 100;
+
+
 
 #endif //UNIJAM_OPTIONS_H

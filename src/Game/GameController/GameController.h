@@ -13,7 +13,7 @@ class Game;
 class GameController
 {
 public:
-    GameController(Game*,Car*,uint8_t playerID);
+    GameController(Game*,Car*,Car*,uint8_t playerID);
     void onAccelerate(float pos);
     void onDecelerate(float pos);
     void onInclination(float pos); //-100 <-> 100
@@ -22,6 +22,7 @@ public:
     void onQuit();
 
     void processInput(sf::Event& event);
+    void perpetualCheck();
 
 private:
     int m_playerID;
@@ -30,7 +31,7 @@ private:
     bool m_xboxMode;
 
     Game* m_game;
-    Car* m_car;
+    Car* m_car1,*m_car2;
 };
 
 

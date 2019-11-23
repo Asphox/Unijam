@@ -20,7 +20,7 @@ private:
 
     float m_maxVelocity = 100;
     float m_linearVelocityIncrement = 0.5;
-    float m_angularVelocityCoefficient = 10000;
+    float m_angularVelocityCoefficient = 5000;
     float m_jumpVerticalCoefficient = 2000000;
 
 
@@ -28,14 +28,16 @@ public:
     Car(b2Body* vehicleBody, Convex* bodyTop, Convex* bodyBot, Circle* leftWheel, Circle* rightWhee, b2WheelJoint* leftJoint, b2WheelJoint* rightJoint);
     void update() override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void accelerate();
-    void decelerate();
+    void accelerate(float);
+    void decelerate(float);
 
     void rotateLeft(float userValue);
 
     void rotateRight(float userValue);
 
     void jump();
+
+    sf::Vector2f getPosition() const;
 };
 
 #endif
