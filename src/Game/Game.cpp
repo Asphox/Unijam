@@ -142,6 +142,8 @@ void Game::updateGraphics()
 
 void Game::updatePhysics()
 {
+    m_car1previousSpeedX = m_car1speedX;
+   // m_car2previousSpeedX = m_car2speedX;
     static int i = 0;
     static bool stopForceAccelerate = false;
     if( i == 10 && !stopForceAccelerate)
@@ -159,7 +161,7 @@ void Game::updatePhysics()
     m_car2speedX = m_car2->getPosition().x - m_car2X;
 
     m_scene.translateRightTopScreen(std::max(m_car1speedX,MIN_VIEW_SPEED) );
-    m_scene.translateRightBotScreen(std::max(m_car2speedX,MIN_VIEW_SPEED));
+    m_scene.translateRightBotScreen(std::max(m_car2speedX,MIN_VIEW_SPEED) );
 
     checkDeath();
 

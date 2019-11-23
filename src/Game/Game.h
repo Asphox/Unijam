@@ -59,6 +59,7 @@ private:
 
     Timer<Game> physicsTimer;
 
+    float m_car1previousSpeedX = 0, m_car2previousX = 0;
     float m_car1speedX = 0,m_car2speedX = 0;
 
     float getDeltaCarTopStartWithCurrent();
