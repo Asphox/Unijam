@@ -237,17 +237,22 @@ void Game::checkDeath()
 {
     if(!DISABLE_DEATH)
     {
-        if( -m_car1->getPosition().y > WORLD_SCENE_TOP_START_Y+m_window.getSize().y/2)
+        if( -m_car1->getPosition().y > WORLD_SCENE_TOP_START_Y+m_window.getSize().y/2) {
             m_state = STATE::ECHEC;
-
-        if( -m_car2->getPosition().y > WORLD_SCENE_BOT_START_Y+m_window.getSize().y/2)
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( -m_car2->getPosition().y > WORLD_SCENE_BOT_START_Y+m_window.getSize().y/2) {
             m_state = STATE::ECHEC;
-
-        if( m_car1->getPosition().x < (m_scene.getLeftBorderTopX()-DEATH_LEFT_OFFSET) )
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( m_car1->getPosition().x < (m_scene.getLeftBorderTopX()-DEATH_LEFT_OFFSET) ) {
             m_state = STATE::ECHEC;
-
-        if( m_car2->getPosition().x < (m_scene.getLeftBorderBotX()-DEATH_LEFT_OFFSET) )
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( m_car2->getPosition().x < (m_scene.getLeftBorderBotX()-DEATH_LEFT_OFFSET) ) {
             m_state = STATE::ECHEC;
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
     }
 }
 

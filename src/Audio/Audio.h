@@ -24,7 +24,8 @@ public:
         CAR1JUMP,
         CAR2JUMP,
         CAR1CRASH,
-        CAR2CRASH
+        CAR2CRASH,
+        ECHEC
     };
     Audio();
     ~Audio();

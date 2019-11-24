@@ -5,7 +5,7 @@
 #ifndef UNIJAM_OPTIONS_H
 #define UNIJAM_OPTIONS_H
 
-constexpr bool DISABLE_DEATH = true;
+constexpr bool DISABLE_DEATH = false;
 
 constexpr int WINDOW_SIZE_H = 800;
 constexpr int WINDOW_SIZE_W = 600;

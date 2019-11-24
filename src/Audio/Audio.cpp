@@ -13,6 +13,7 @@ Audio::Audio() {
     addSound(SOUND::CAR2JUMP, "Assets/car2Jump.ogg");
     addSound(SOUND::CAR1CRASH, "Assets/car1Crash.ogg");
     addSound(SOUND::CAR2CRASH, "Assets/car2Crash.ogg");
+    addSound(SOUND::ECHEC, "Assets/echec.ogg");
 }
 
 Audio::~Audio() {
