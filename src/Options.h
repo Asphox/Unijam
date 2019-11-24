@@ -5,7 +5,7 @@
 #ifndef UNIJAM_OPTIONS_H
 #define UNIJAM_OPTIONS_H
 
-constexpr bool DISABLE_DEATH = false;
+constexpr bool DISABLE_DEATH = true;
 
 constexpr int WORLD_SCENE_TOP_START_X = 10000;
 constexpr int WORLD_SCENE_TOP_START_Y  = 10000;

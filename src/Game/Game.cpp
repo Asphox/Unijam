@@ -161,7 +161,7 @@ void Game::reset()
         level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4200, WORLD_SCENE_TOP_START_Y+200, 100, 10));
         level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4100, WORLD_SCENE_TOP_START_Y+160, 10, 50));
         level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+3750, WORLD_SCENE_TOP_START_Y+550, 250, 200));
-        level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4300, WORLD_SCENE_TOP_START_Y+10, 10, 200));
+        level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+4300, WORLD_SCENE_TOP_START_Y+10, 10, 130));
         for (int i = 0; i < 30; i++) {
             level->addEntityTop(
                     factory.createCircleDynamic(m_world,
