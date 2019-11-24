@@ -37,6 +37,7 @@ public:
     inline void stop()
     {
         m_thread.stop();
+        m_runned = false;
     }
 
 
@@ -49,16 +50,24 @@ private:
 
     void update()
     {
-        for(auto it : m_callBacks)
+        if(m_runned)
         {
-            ((it.first)->*(it.second))();
+            for(auto it : m_callBacks)
+            {
+                ((it.first)->*(it.second))();
+            }
+            sf::sleep(sf::milliseconds(m_periodMS));
+        } else
+        {
+            m_runned = true;
         }
-        sf::sleep(sf::milliseconds(m_periodMS));
+
     }
 
     Thread m_thread;
     uint32_t m_periodMS = 0;
     std::vector< std::pair<T*,void(T::*)(void)> > m_callBacks;
+    bool m_runned = false;
 };
 
 

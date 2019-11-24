@@ -69,6 +69,10 @@ void Car::decelerate(float f){
     }
     m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
      */
+    m_leftJoint->SetMotorSpeed(f*m_linearVelocityIncrement);
+    m_rightJoint->SetMotorSpeed(f*m_linearVelocityIncrement);
+    m_compensatingJoint1->SetMotorSpeed(-m_leftJoint->GetMotorSpeed());
+    m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
 }
 
 void Car::rotate(float userValue){
@@ -86,5 +90,16 @@ sf::Vector2f Car::getPosition() const
     r.x = m_vehiclePhysicalBody->GetPosition().x;
     r.y = m_vehiclePhysicalBody->GetPosition().y;
     return r;
+}
+
+void Car::impulseForward(float intensity)
+{
+    float angle = m_vehiclePhysicalBody->GetAngle();
+    m_vehiclePhysicalBody->ApplyLinearImpulseToCenter(intensity*6000000*b2Vec2(cos(angle),sin(angle)),true);
+}
+
+void Car::impulseBackward(float intensity)
+{
+
 }
 

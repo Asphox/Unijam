@@ -26,12 +26,36 @@ GameScene::GameScene(sf::RenderWindow& window) : m_window(window)
     m_splitScreenSeparation.setPosition(window.getSize().x/2,window.getSize().y/2);
     m_splitScreenSeparation.setFillColor(sf::Color(32,32,32));
 
+    m_jumpStatusTop.setSize(sf::Vector2f(50,50));
+    m_jumpStatusTop.setPosition(50, 0.05*m_window.getSize().y);
+
+    m_jumpStatusBot.setSize(sf::Vector2f(50,50));
+    m_jumpStatusBot.setPosition(50,0.55*m_window.getSize().y);
+
 }
 
 void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.setView(target.getDefaultView());
     target.draw(m_splitScreenSeparation);
+    target.draw(m_jumpStatusTop);
+    target.draw(m_jumpStatusBot);
+}
+
+void GameScene::enableJumpBot(bool b)
+{
+    if(!b)
+        m_jumpStatusBot.setFillColor(sf::Color(190,190,190, 200) );
+    else
+        m_jumpStatusBot.setFillColor(sf::Color(0,190,0, 200) );
+}
+
+void GameScene::enableJumpTop(bool b)
+{
+    if(!b)
+        m_jumpStatusTop.setFillColor(sf::Color(190,190,190,200) );
+    else
+        m_jumpStatusTop.setFillColor(sf::Color(0,190,0, 200) );
 }
 
 void GameScene::newDefaultTopCenterX(float x)
