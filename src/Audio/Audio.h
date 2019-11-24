@@ -18,7 +18,13 @@ private:
 public:
     enum class SOUND{
         CAR1BOOST,
-        CAR2BOOST
+        CAR2BOOST,
+        CAR1SPEED,
+        CAR2SPEED,
+        CAR1JUMP,
+        CAR2JUMP,
+        CAR1CRASH,
+        CAR2CRASH
     };
     Audio();
     ~Audio();
@@ -27,7 +33,11 @@ public:
     void pause(bool isPause);
     void addSound(SOUND sound, char *filename);
 
+    void playSound(SOUND sound, bool loop);
     void playSound(SOUND sound, float volume);
+    void modifySound(SOUND sound, float volume, float pitch);
+
+    void modifySound(SOUND sound, float volume);
 };
 
 

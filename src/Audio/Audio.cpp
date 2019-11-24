@@ -7,6 +7,12 @@
 Audio::Audio() {
     addSound(SOUND::CAR1BOOST, "Assets/car1boost.ogg");
     addSound(SOUND::CAR2BOOST, "Assets/car2boost.ogg");
+    addSound(SOUND::CAR1SPEED, "Assets/car1Speed.ogg");
+    addSound(SOUND::CAR2SPEED, "Assets/car2Speed.ogg");
+    addSound(SOUND::CAR1JUMP, "Assets/car1Jump.ogg");
+    addSound(SOUND::CAR2JUMP, "Assets/car2Jump.ogg");
+    addSound(SOUND::CAR1CRASH, "Assets/car1Crash.ogg");
+    addSound(SOUND::CAR2CRASH, "Assets/car2Crash.ogg");
 }
 
 Audio::~Audio() {
@@ -31,8 +37,25 @@ void Audio::playSound(SOUND sound) {
 }
 
 void Audio::playSound(SOUND sound, float volume){
-    m_soundMap.at((int)sound).setVolume(std::max(volume,100.0f));
+    if (volume > 100){
+        volume = 100.0f;
+    }
+    m_soundMap.at((int)sound).setVolume(volume);
     m_soundMap.at((int)sound).play();
+}
+
+void Audio::playSound(SOUND sound, bool loop){
+    m_soundMap.at((int)sound).setLoop(loop);
+    m_soundMap.at((int)sound).play();
+}
+
+void Audio::modifySound(SOUND sound, float volume, float pitch){
+    m_soundMap.at((int)sound).setVolume(volume);
+    m_soundMap.at((int)sound).setPitch(pitch);
+}
+
+void Audio::modifySound(SOUND sound, float volume){
+    m_soundMap.at((int)sound).setVolume(volume);
 }
 
 int Audio::playBackgroundMusic() {
@@ -42,7 +65,7 @@ int Audio::playBackgroundMusic() {
             return -1; // error
         }
         m_backgroundMusic.setLoop(true);
-        m_backgroundMusic.setVolume(30.0f);
+        m_backgroundMusic.setVolume(20.0f);
         m_backgroundMusic.play();
         m_isBackgroundMusicLaunched = true;
         return 0;
@@ -54,10 +77,10 @@ int Audio::playBackgroundMusic() {
 
 void Audio::pause(bool isPause){
     if (isPause){
-        m_backgroundMusic.setVolume(30.0f);
+        m_backgroundMusic.setVolume(20.0f);
     }
     else{
-        m_backgroundMusic.setVolume(100.0f);
+        m_backgroundMusic.setVolume(50.0f);
     }
 }
 

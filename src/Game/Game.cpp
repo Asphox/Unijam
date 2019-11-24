@@ -211,6 +211,10 @@ void Game::reset()
 
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_TOP_START_Y+RELATIVE_CAR_SPAWN_Y);
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y+RELATIVE_CAR_SPAWN_Y);
+    m_audio.playSound(Audio::SOUND::CAR1SPEED, true);
+    m_audio.modifySound(Audio::SOUND::CAR1SPEED, 0.0f);
+    m_audio.playSound(Audio::SOUND::CAR2SPEED, true);
+    m_audio.modifySound(Audio::SOUND::CAR2SPEED, 0.0f);
 
     m_controller0 = new GameController(this,m_car1,0);
     m_controller1 = new GameController(this,m_car2,1);
@@ -355,6 +359,7 @@ void Game::shockDetectedOnCar1(float intensity)
 {
     m_car2->impulseForward(intensity);
     m_audio.playSound(Audio::SOUND::CAR2BOOST, intensity*100);
+    m_audio.playSound(Audio::SOUND::CAR1CRASH, intensity*30);
     m_passedSpeedsTop.clear();
     initStacksSpeedsTop();
     m_shockCar1Processed = true;
@@ -364,6 +369,7 @@ void Game::shockDetectedOnCar2(float intensity)
 {
     m_car1->impulseForward(intensity);
     m_audio.playSound(Audio::SOUND::CAR1BOOST, intensity*100);
+    m_audio.playSound(Audio::SOUND::CAR2CRASH, intensity*30);
     m_passedSpeedsBot.clear();
     initStacksSpeedsBot();
     m_shockCar2Processed = true;

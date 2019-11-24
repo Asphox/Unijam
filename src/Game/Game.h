@@ -81,7 +81,6 @@ private:
     Car* m_car1,*m_car2;
     std::vector<Box*> m_boxsTop;
     std::vector<Box*> m_boxsBot;
-    Audio m_audio;
     //Box* m_box1,*m_box2;
 
     Timer<Game> physicsTimer;
@@ -105,6 +104,7 @@ private:
 
 public:
     inline STATE getState() { return m_state; }
+    Audio m_audio;
 };
 
 
