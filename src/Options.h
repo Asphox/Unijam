@@ -36,10 +36,13 @@ constexpr float   PHY_TIME_STEP = 1.0f / 60.0f;
 
 constexpr float RELATIVE_CAR_SPAWN_X = 300;
 constexpr float RELATIVE_CAR_SPAWN_Y = 300;
+constexpr float RELATIVE_PUSH_VIEW_X = 700;
 
-constexpr float MIN_VIEW_SPEED = 0.15;
+constexpr float MIN_VIEW_SPEED = 0.25;
 
 constexpr float DEATH_LEFT_OFFSET = 50;
+
+constexpr unsigned int MAX_PASSED_SPEEDS_STORED = 10;
 
 
 

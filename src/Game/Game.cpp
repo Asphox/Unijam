@@ -4,14 +4,84 @@
 
 #include "Game.h"
 
-Game::Game(sf::RenderWindow& window) : m_menu(this), m_world(-10.0f), m_scene(window), m_window(window), physicsTimer(2)
+Game::Game(sf::RenderWindow& window) : m_menu(this), m_world(-10.0f), m_scene(window), m_window(window), physicsTimer(2) , jumpTimer( 1500)
 {
     m_state = STATE::MENU;
+    m_scene.enableJumpTop(true);
+    m_scene.enableJumpBot(true);
+    initStacksSpeedsTop();
+    initStacksSpeedsBot();
     if( !m_font.loadFromFile("Assets/Arial.ttf") )
     {
         std::cerr << "CAN'T LOAD FONT" << std::endl;
     }
     physicsTimer.addCallBack(this,&Game::updatePhysics);
+}
+
+void Game::initStacksSpeedsTop()
+{
+    m_passedSpeedsTop.clear();
+    for( unsigned int i=0;i<MAX_PASSED_SPEEDS_STORED;i++)
+    {
+        m_passedSpeedsTop.push_front(0.0f);
+    }
+}
+
+void Game::initStacksSpeedsBot()
+{
+    m_passedSpeedsBot.clear();
+    for( unsigned int i=0;i<MAX_PASSED_SPEEDS_STORED;i++)
+    {
+        m_passedSpeedsBot.push_front(0.0f);
+    }
+}
+
+void Game::addSpeedsTop(float v)
+{
+    m_passedSpeedsTop.push_front(v);
+    m_passedSpeedsTop.pop_back();
+}
+
+void Game::addSpeedsBot(float v)
+{
+    m_passedSpeedsBot.push_front(v);
+    m_passedSpeedsBot.pop_back();
+}
+
+float Game::getSpeedsTopAt(unsigned int index)
+{
+    return m_passedSpeedsTop.at(index);
+}
+
+float Game::getSpeedsBotAt(unsigned int index)
+{
+    return m_passedSpeedsBot.at(index);
+}
+
+void Game::resetJump1()
+{
+    m_jumpEnabled1 = true;
+    m_scene.enableJumpTop(true);
+}
+
+void Game::startJump1()
+{
+    m_jumpEnabled1 = false;
+    jump1 = 750;
+    m_scene.enableJumpTop(false);
+}
+
+void Game::resetJump2()
+{
+    m_jumpEnabled2 = true;
+    m_scene.enableJumpBot(true);
+}
+
+void Game::startJump2()
+{
+    m_jumpEnabled2 = false;
+    m_scene.enableJumpBot(false);
+    jump2 = 750;
 }
 
 void Game::reset()
@@ -55,8 +125,8 @@ void Game::reset()
     //Plat jusqu'à la fin
     level1->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+8300, WORLD_SCENE_TOP_START_Y+500, 2000, 200));
 
-    m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_TOP_START_Y);
-    m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y);
+    m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_TOP_START_Y+RELATIVE_CAR_SPAWN_Y);
+    m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y+RELATIVE_CAR_SPAWN_Y);
 
 
     m_controller0 = new GameController(this,m_car1,0);
@@ -142,16 +212,72 @@ void Game::updateGraphics()
 
 void Game::updatePhysics()
 {
+    static int shockCar1_counter = 0;
+    if(shockCar1_counter==0) m_shockCar1Processed = false;
+    static int shockCar2_counter = 0;
+    if(shockCar2_counter==0) m_shockCar2Processed = false;
+    if(jump1==0) resetJump1();
+    if(jump2==0) resetJump2();
+
+    addSpeedsTop(m_car1speedX);
+    addSpeedsBot(m_car2speedX);
     float m_car1X = m_car1->getPosition().x;
     float m_car2X = m_car2->getPosition().x;
     m_world.step(PHY_TIME_STEP);
     m_car1speedX = m_car1->getPosition().x - m_car1X;
     m_car2speedX = m_car2->getPosition().x - m_car2X;
 
-    m_scene.translateRightTopScreen(std::max(m_car1speedX,MIN_VIEW_SPEED) );
-    m_scene.translateRightBotScreen(std::max(m_car2speedX,MIN_VIEW_SPEED) );
+    if( getSpeedsTopAt(5) - m_car1speedX > 0.2 && !m_shockCar1Processed)
+    {
+        shockDetectedOnCar1(getSpeedsTopAt(5) - m_car1speedX);
+        shockCar1_counter = 50;
+    }
+    if( getSpeedsBotAt(5) - m_car2speedX > 0.3 && !m_shockCar2Processed)
+    {
+        shockDetectedOnCar2(getSpeedsBotAt(5) - m_car2speedX);
+        shockCar2_counter = 50;
+    }
+
+    if(m_car1->getPosition().x < m_scene.getLeftBorderTopX()+RELATIVE_PUSH_VIEW_X)
+    {
+        m_scene.translateRightTopScreen(MIN_VIEW_SPEED);
+    }
+    else
+    {
+        m_scene.translateRightTopScreen(std::max(m_car1speedX,MIN_VIEW_SPEED) );
+    }
+    
+    if(m_car2->getPosition().x < m_scene.getLeftBorderBotX()+RELATIVE_PUSH_VIEW_X)
+    {
+        m_scene.translateRightBotScreen(MIN_VIEW_SPEED);
+    }
+    else
+    {
+        m_scene.translateRightBotScreen(std::max(m_car2speedX,MIN_VIEW_SPEED) );
+    }
 
     checkDeath();
+
+    if(shockCar1_counter>0)shockCar1_counter--;
+    if(shockCar2_counter>0)shockCar2_counter--;
+    if(jump1>0)jump1--;
+    if(jump2>0)jump2--;
+}
+
+void Game::shockDetectedOnCar1(float intensity)
+{
+    m_car2->impulseForward(intensity);
+    m_passedSpeedsTop.clear();
+    initStacksSpeedsTop();
+    m_shockCar1Processed = true;
+}
+
+void Game::shockDetectedOnCar2(float intensity)
+{
+    m_car1->impulseForward(intensity);
+    m_passedSpeedsBot.clear();
+    initStacksSpeedsBot();
+    m_shockCar2Processed = true;
 }
 
 void Game::pause()

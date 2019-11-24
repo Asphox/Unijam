@@ -35,6 +35,9 @@ public:
     void rotate(float userValue);
     void jump();
 
+    void impulseForward(float intensity);
+    void impulseBackward(float intensity);
+
     sf::Vector2f getPosition() const;
 };
 

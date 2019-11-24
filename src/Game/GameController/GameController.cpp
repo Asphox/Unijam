@@ -72,7 +72,6 @@ void GameController::perpetualCheck()
         if( dec > 10 )
         {
             onDecelerate(dec);
-            std::cout << dec << std::endl;
         }
     }
 }
@@ -91,8 +90,12 @@ void GameController::onInclination(float pos)
 
 void GameController::onJump()
 {
-    if( m_game->getState() == Game::STATE::RUNNING )
+    if( ((m_playerID == 0 && m_game->m_jumpEnabled1) || ((m_playerID == 1 && m_game->m_jumpEnabled2))) && (m_game->getState() == Game::STATE::RUNNING) )
     {
+        if(m_playerID == 0)
+            m_game->startJump1();
+        if(m_playerID == 1)
+            m_game->startJump2();
         if(m_car)
             m_car->jump();
     }

@@ -30,6 +30,9 @@ public:
     void setZoomTopScreen(float zoom);
     void setZoomBotScreen(float zoom);
 
+    void enableJumpTop(bool);
+    void enableJumpBot(bool);
+
     void selectTopScreenView();
     void selectBotScreenView();
     void selectWindowView();
@@ -57,6 +60,9 @@ private:
 
     sf::RectangleShape m_splitScreenSeparation;
     sf::Vector2f m_defaultViewSize;
+
+    sf::RectangleShape m_jumpStatusTop;
+    sf::RectangleShape m_jumpStatusBot;
 
     std::vector<Entity*>* m_topScreenEntities = nullptr;
     std::vector<Entity*>* m_botScreenEntities = nullptr;
