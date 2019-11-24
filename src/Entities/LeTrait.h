@@ -21,7 +21,14 @@ public:
 
     LeTrait(sf::RenderWindow&,GameScene&,Car* start,Car* end);
     void show(bool);
-    inline void setMode(MODE mode){ m_mode = mode; }
+    void setMode(MODE mode)
+    {
+        m_mode = mode;
+        if(m_mode == MODE::M1TO2)
+            m_shape.setTexture(&m_texture1to2);
+        else
+            m_shape.setTexture(&m_texture2to1);
+    }
     void update();
 
 private:

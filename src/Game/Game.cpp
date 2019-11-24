@@ -211,6 +211,10 @@ void Game::reset()
 
     m_car1 = factory.createCar(m_world, WORLD_SCENE_TOP_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_TOP_START_Y+RELATIVE_CAR_SPAWN_Y);
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y+RELATIVE_CAR_SPAWN_Y);
+    m_audio.playSound(Audio::SOUND::CAR1SPEED, true);
+    m_audio.modifySound(Audio::SOUND::CAR1SPEED, 0.0f);
+    m_audio.playSound(Audio::SOUND::CAR2SPEED, true);
+    m_audio.modifySound(Audio::SOUND::CAR2SPEED, 0.0f);
 
     m_controller0 = new GameController(this,m_car1,0);
     m_controller1 = new GameController(this,m_car2,1);
@@ -221,6 +225,7 @@ void Game::reset()
 void Game::run()
 {
     reset();
+    m_audio.playBackgroundMusic();
     while (m_window.isOpen())
     {
         pollEvent();
@@ -234,17 +239,22 @@ void Game::checkDeath()
 {
     if(!DISABLE_DEATH)
     {
-        if( -m_car1->getPosition().y > WORLD_SCENE_TOP_START_Y+m_window.getSize().y/2)
+        if( -m_car1->getPosition().y > WORLD_SCENE_TOP_START_Y+m_window.getSize().y/2) {
             m_state = STATE::ECHEC;
-
-        if( -m_car2->getPosition().y > WORLD_SCENE_BOT_START_Y+m_window.getSize().y/2)
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( -m_car2->getPosition().y > WORLD_SCENE_BOT_START_Y+m_window.getSize().y/2) {
             m_state = STATE::ECHEC;
-
-        if( m_car1->getPosition().x < (m_scene.getLeftBorderTopX()-DEATH_LEFT_OFFSET) )
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( m_car1->getPosition().x < (m_scene.getLeftBorderTopX()-DEATH_LEFT_OFFSET) ) {
             m_state = STATE::ECHEC;
-
-        if( m_car2->getPosition().x < (m_scene.getLeftBorderBotX()-DEATH_LEFT_OFFSET) )
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
+        else if( m_car2->getPosition().x < (m_scene.getLeftBorderBotX()-DEATH_LEFT_OFFSET) ) {
             m_state = STATE::ECHEC;
+            m_audio.playSound(Audio::SOUND::ECHEC);
+        }
     }
 }
 
@@ -268,6 +278,7 @@ void Game::updateGraphics()
         physicsTimer.stop();
         m_menu.updateControllerStatus();
         m_window.draw(m_menu);
+        m_audio.pause(true);
     }
     if(m_state == STATE::ECHEC)
     {
@@ -275,6 +286,7 @@ void Game::updateGraphics()
         m_menu.updateControllerStatus();
         m_menu.setEchec();
         m_window.draw(m_menu);
+        m_audio.pause(true);
 
     }
     else if(m_state == STATE::RUNNING)
@@ -295,6 +307,7 @@ void Game::updateGraphics()
             m_leTrait->update();
             m_window.draw(*m_leTrait);
         }
+        m_audio.pause(false);
     }
     m_window.display();
 }
@@ -367,6 +380,8 @@ void Game::shockDetectedOnCar1(float intensity)
     m_leTrait->setMode(LeTrait::MODE::M1TO2);
     m_leTrait->show(true);
     m_car2->impulseForward(intensity);
+    m_audio.playSound(Audio::SOUND::CAR2BOOST, intensity*100);
+    m_audio.playSound(Audio::SOUND::CAR1CRASH, intensity*30);
     m_passedSpeedsTop.clear();
     initStacksSpeedsTop();
     m_shockCar1Processed = true;
@@ -377,6 +392,8 @@ void Game::shockDetectedOnCar2(float intensity)
     m_leTrait->setMode(LeTrait::MODE::M2TO1);
     m_leTrait->show(true);
     m_car1->impulseForward(intensity);
+    m_audio.playSound(Audio::SOUND::CAR1BOOST, intensity*100);
+    m_audio.playSound(Audio::SOUND::CAR2CRASH, intensity*30);
     m_passedSpeedsBot.clear();
     initStacksSpeedsBot();
     m_shockCar2Processed = true;
@@ -384,7 +401,12 @@ void Game::shockDetectedOnCar2(float intensity)
 
 void Game::pause()
 {
-    if(m_state == STATE::MENU || m_state == STATE::PAUSED)
+    if(m_state == STATE::MENU)
+    {
+        m_state = STATE::RUNNING;
+        physicsTimer.start();
+    }
+    if (m_state == STATE::PAUSED)
     {
         m_state = STATE::RUNNING;
         physicsTimer.start();

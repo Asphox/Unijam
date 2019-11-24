@@ -92,10 +92,14 @@ void GameController::onJump()
 {
     if( ((m_playerID == 0 && m_game->m_jumpEnabled1) || ((m_playerID == 1 && m_game->m_jumpEnabled2))) && (m_game->getState() == Game::STATE::RUNNING) )
     {
-        if(m_playerID == 0)
+        if(m_playerID == 0) {
             m_game->startJump1();
-        if(m_playerID == 1)
+            m_game->m_audio.playSound(Audio::SOUND::CAR1JUMP, 30.0f);
+        }
+        if(m_playerID == 1) {
             m_game->startJump2();
+            m_game->m_audio.playSound(Audio::SOUND::CAR2JUMP, 30.0f);
+        }
         if(m_car)
             m_car->jump();
     }
@@ -129,5 +133,11 @@ void GameController::onAccelerate(float pos)
     {
         if(m_car)
             m_car->accelerate(pos);
+        if (m_playerID == 0) {
+            m_game->m_audio.modifySound(Audio::SOUND::CAR1SPEED, pos/4+20, pos/150);
+        }
+        else {
+            m_game->m_audio.modifySound(Audio::SOUND::CAR2SPEED, pos/4+20, pos/150);
+        }
     }
 }

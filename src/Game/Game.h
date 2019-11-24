@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stack>
+#include <Audio/Audio.h>
 #include "GameScene/GameMenu.h"
 #include "GameScene/GameScene.h"
 #include "GameController/GameController.h"
@@ -108,6 +109,7 @@ private:
 
 public:
     inline STATE getState() { return m_state; }
+    Audio m_audio;
 };
 
 

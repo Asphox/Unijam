@@ -13,10 +13,11 @@ file(GLOB_RECURSE BOX2D_src "src/Tiers/Box2D/*.cpp")
 file(GLOB_RECURSE GAME_src "src/Game/*.cpp")
 
 
-add_executable(Unijam src/main.cpp src/Graphics/AnimatedSprite.cpp src/Graphics/AnimatedSprite.h src/System/Timer.cpp src/System/Timer.h src/System/Thread.cpp src/System/Thread.h ${BOX2D_src} ${GAME_src} src/Physics/World.cpp src/Physics/World.h src/Physics/Box.cpp src/Physics/Box.h src/Physics/Entity.cpp src/Physics/Entity.h src/Physics/EntityFactory.cpp src/Physics/EntityFactory.h src/Physics/Circle.cpp src/Physics/Circle.h src/Entities/Car.h src/Entities/Car.cpp src/Physics/Convex.cpp src/Physics/Convex.h src/Entities/Level.cpp src/Entities/Level.h src/Entities/LeTrait.cpp src/Entities/LeTrait.h)
+add_executable(Unijam src/main.cpp src/Graphics/AnimatedSprite.cpp src/Graphics/AnimatedSprite.h src/System/Timer.cpp src/System/Timer.h src/System/Thread.cpp src/System/Thread.h ${BOX2D_src} ${GAME_src} src/Physics/World.cpp src/Physics/World.h src/Physics/Box.cpp src/Physics/Box.h src/Physics/Entity.cpp src/Physics/Entity.h src/Physics/EntityFactory.cpp src/Physics/EntityFactory.h src/Physics/Circle.cpp src/Physics/Circle.h src/Entities/Car.h src/Entities/Car.cpp src/Physics/Convex.cpp src/Physics/Convex.h src/Entities/Level.cpp src/Entities/Level.h src/Entities/LeTrait.cpp src/Entities/LeTrait.h src/Audio/Audio.cpp src/Audio/Audio.h)
 
 target_link_libraries(Unijam
         sfml-window
         sfml-graphics
-        sfml-system)
+        sfml-system
+        sfml-audio)
 
