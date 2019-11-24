@@ -5,21 +5,34 @@
 #include "Audio.h"
 
 Audio::Audio() {
-    sf::SoundBuffer boostCar1Buffer;
-    if (!boostCar1Buffer.loadFromFile("Assets/backgroundMusic.ogg")){
-        printf("Audio file not found!\n");
-    }
-    m_soundMap.emplace(SOUND::BOOST, boostCar1Buffer);
+    addSound(SOUND::CAR1BOOST, "Assets/car1boost.ogg");
+    addSound(SOUND::CAR2BOOST, "Assets/car2boost.ogg");
 }
 
 Audio::~Audio() {
 
 }
 
-void Audio::playSound(SOUND sound){
+void Audio::addSound(SOUND sound, char* filename){
+    sf::SoundBuffer soundBuffer;
+    if (!soundBuffer.loadFromFile(filename)){
+        printf("Audio file '%s' not found!\n", filename);
+    }
+    m_soundBufferMap.emplace((int)sound, soundBuffer);
+
     sf::Sound soundPlayer;
-    soundPlayer.setBuffer(m_soundMap.at(sound));
+    soundPlayer.setBuffer(m_soundBufferMap.at((int)sound));
     soundPlayer.play();
+    m_soundMap.emplace((int)sound, soundPlayer);
+}
+
+void Audio::playSound(SOUND sound) {
+    Audio::playSound(sound, 100.0f);
+}
+
+void Audio::playSound(SOUND sound, float volume){
+    m_soundMap.at((int)sound).setVolume(std::max(volume,100.0f));
+    m_soundMap.at((int)sound).play();
 }
 
 int Audio::playBackgroundMusic() {

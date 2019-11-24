@@ -354,6 +354,7 @@ void Game::updatePhysics()
 void Game::shockDetectedOnCar1(float intensity)
 {
     m_car2->impulseForward(intensity);
+    m_audio.playSound(Audio::SOUND::CAR2BOOST, intensity*100);
     m_passedSpeedsTop.clear();
     initStacksSpeedsTop();
     m_shockCar1Processed = true;
@@ -362,6 +363,7 @@ void Game::shockDetectedOnCar1(float intensity)
 void Game::shockDetectedOnCar2(float intensity)
 {
     m_car1->impulseForward(intensity);
+    m_audio.playSound(Audio::SOUND::CAR1BOOST, intensity*100);
     m_passedSpeedsBot.clear();
     initStacksSpeedsBot();
     m_shockCar2Processed = true;
