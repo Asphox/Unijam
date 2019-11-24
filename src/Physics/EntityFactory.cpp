@@ -172,6 +172,7 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
 
     b2BodyDef vehicleBodyDef;
     vehicleBodyDef.type = b2_dynamicBody;
+    vehicleBodyDef.linearDamping = 0.02;
     vehicleBodyDef.position.Set(x, -y);
 
     b2Body* vehicleBody;
@@ -235,8 +236,6 @@ Car* EntityFactory::createCar(World &world, float x, float y, float size) {
     jd.Initialize(vehicleBody, compensatingWheel2, compensatingWheel2->GetWorldCenter(), b2Vec2(0,1));
     jd.collideConnected = false;
     b2WheelJoint* compensatingJoint2 = (b2WheelJoint*)world.getWorld().CreateJoint(&jd);
-
-
 
 
 

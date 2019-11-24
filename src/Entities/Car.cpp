@@ -39,17 +39,17 @@ void Car::accelerate(float f){
             m_leftJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
-    m_compensatingJoint1->SetMotorSpeed(-m_leftJoint->GetMotorSpeed());
     if (m_rightJoint->GetMotorSpeed() > -m_maxVelocity){
         m_rightJoint->SetMotorSpeed(m_rightJoint->GetMotorSpeed() - m_linearVelocityIncrement);
         if (!(m_rightJoint->GetMotorSpeed() > -m_maxVelocity)) {
             m_rightJoint->SetMotorSpeed(-m_maxVelocity);
         }
     }
-    m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
     */
-    m_leftJoint->SetMotorSpeed(-f*100);
-    m_rightJoint->SetMotorSpeed(-f*100);
+    m_leftJoint->SetMotorSpeed(-f*m_linearVelocityIncrement);
+    m_rightJoint->SetMotorSpeed(-f*m_linearVelocityIncrement);
+    m_compensatingJoint1->SetMotorSpeed(-m_leftJoint->GetMotorSpeed());
+    m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
 }
 
 void Car::decelerate(float f){
