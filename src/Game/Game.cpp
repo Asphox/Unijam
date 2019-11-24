@@ -219,6 +219,7 @@ void Game::reset()
 void Game::run()
 {
     reset();
+    m_audio.playBackgroundMusic();
     while (m_window.isOpen())
     {
         pollEvent();
@@ -266,6 +267,7 @@ void Game::updateGraphics()
         physicsTimer.stop();
         m_menu.updateControllerStatus();
         m_window.draw(m_menu);
+        m_audio.pause(true);
     }
     if(m_state == STATE::ECHEC)
     {
@@ -273,6 +275,7 @@ void Game::updateGraphics()
         m_menu.updateControllerStatus();
         m_menu.setEchec();
         m_window.draw(m_menu);
+        m_audio.pause(true);
 
     }
     else if(m_state == STATE::RUNNING)
@@ -287,8 +290,9 @@ void Game::updateGraphics()
         m_window.draw(*m_car2);
         level->drawBot(m_window);
 
-
         m_window.draw(m_scene);
+
+        m_audio.pause(false);
     }
     m_window.display();
 }
@@ -365,7 +369,12 @@ void Game::shockDetectedOnCar2(float intensity)
 
 void Game::pause()
 {
-    if(m_state == STATE::MENU || m_state == STATE::PAUSED)
+    if(m_state == STATE::MENU)
+    {
+        m_state = STATE::RUNNING;
+        physicsTimer.start();
+    }
+    if (m_state == STATE::PAUSED)
     {
         m_state = STATE::RUNNING;
         physicsTimer.start();

@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stack>
+#include <Audio/Audio.h>
 #include "GameScene/GameMenu.h"
 #include "GameScene/GameScene.h"
 #include "GameController/GameController.h"
@@ -80,6 +81,7 @@ private:
     Car* m_car1,*m_car2;
     std::vector<Box*> m_boxsTop;
     std::vector<Box*> m_boxsBot;
+    Audio m_audio;
     //Box* m_box1,*m_box2;
 
     Timer<Game> physicsTimer;
