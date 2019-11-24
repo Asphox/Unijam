@@ -12,7 +12,9 @@ Convex::Convex(b2Body* body, float x, float y, float a, b2Vec2* vertices, int ve
     m_convex.setPosition(x, y);
     m_convex.setOrigin(body->GetLocalCenter().x, body->GetLocalCenter().y);
     m_convex.setRotation(a);
-    m_convex.setFillColor(sf::Color(255,255,255));
+    m_convex.setFillColor(sf::Color(150,200,255));
+    m_convex.setOutlineThickness(3);
+    m_convex.setOutlineColor(sf::Color(0,64,192));
 }
 
 Convex::Convex(b2Body* body, float x, float y, float a, std::vector<std::pair<float, float>>& vertices) : m_body(body){
@@ -25,7 +27,9 @@ Convex::Convex(b2Body* body, float x, float y, float a, std::vector<std::pair<fl
     m_convex.setPosition(x, y);
     m_convex.setOrigin(body->GetLocalCenter().x, body->GetLocalCenter().y);
     m_convex.setRotation(a);
-    m_convex.setFillColor(sf::Color(255,255,255));
+    m_convex.setFillColor(sf::Color(150,200,255));
+    m_convex.setOutlineThickness(3);
+    m_convex.setOutlineColor(sf::Color(0,64,192));
 }
 Convex::~Convex() {
 

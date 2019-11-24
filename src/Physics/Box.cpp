@@ -10,7 +10,9 @@ Box::Box(b2Body* body, float x, float y, float w, float h, float a) : Entity(), 
     m_rectangle.setPosition(x, y);
     m_rectangle.setOrigin(w / 2, h / 2);
     m_rectangle.setRotation(a);
-    m_rectangle.setFillColor(sf::Color(255,255,255));
+    m_rectangle.setFillColor(sf::Color(150,200,255));
+    m_rectangle.setOutlineThickness(3);
+    m_rectangle.setOutlineColor(sf::Color(0,64,192));
 }
 
 Box::~Box() {

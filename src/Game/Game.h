@@ -35,6 +35,12 @@ public:
         ECHEC
     }m_state = STATE::MENU;
 
+    enum class LEVEL
+    {
+        ONE,
+        TWO
+    }m_currentLevel = LEVEL::TWO;
+
 private:
     void updateGraphics();
     void updatePhysics();
@@ -50,7 +56,7 @@ private:
     GameMenu m_menu;
     GameScene m_scene;
     GameController* m_controller0, *m_controller1;
-    Level* level1;
+    Level* level;
     World m_world;
     Car* m_car1,*m_car2;
     std::vector<Box*> m_boxsTop;
