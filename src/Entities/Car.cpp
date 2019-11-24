@@ -32,6 +32,7 @@ void Car::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void Car::accelerate(float f){
+    /*
     if (m_leftJoint->GetMotorSpeed() > -m_maxVelocity){
         m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() - m_linearVelocityIncrement*(f/100.0));
         if (!(m_leftJoint->GetMotorSpeed() > -m_maxVelocity)) {
@@ -46,9 +47,13 @@ void Car::accelerate(float f){
         }
     }
     m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
+    */
+    m_leftJoint->SetMotorSpeed(-f*100);
+    m_rightJoint->SetMotorSpeed(-f*100);
 }
 
 void Car::decelerate(float f){
+    /*
     if (m_leftJoint->GetMotorSpeed() < m_maxVelocity){
         m_leftJoint->SetMotorSpeed(m_leftJoint->GetMotorSpeed() + m_linearVelocityIncrement*(f/100.0));
         if (!(m_leftJoint->GetMotorSpeed() < m_maxVelocity)) {
@@ -63,6 +68,7 @@ void Car::decelerate(float f){
         }
     }
     m_compensatingJoint2->SetMotorSpeed(-m_rightJoint->GetMotorSpeed());
+     */
 }
 
 void Car::rotate(float userValue){

@@ -59,8 +59,8 @@ void Game::reset()
     m_car2 = factory.createCar(m_world, WORLD_SCENE_BOT_START_X+RELATIVE_CAR_SPAWN_X, WORLD_SCENE_BOT_START_Y);
 
 
-    m_controller0 = new GameController(this,m_car1,m_car2,0);
-    m_controller1 = new GameController(this,m_car2,m_car1,1);
+    m_controller0 = new GameController(this,m_car1,0);
+    m_controller1 = new GameController(this,m_car2,1);
 }
 
 void Game::run()
@@ -142,18 +142,6 @@ void Game::updateGraphics()
 
 void Game::updatePhysics()
 {
-    m_car1previousSpeedX = m_car1speedX;
-   // m_car2previousSpeedX = m_car2speedX;
-    static int i = 0;
-    static bool stopForceAccelerate = false;
-    if( i == 10 && !stopForceAccelerate)
-    {
-        m_car1->accelerate(0.01);
-        m_car2->accelerate(0.01);
-        i=0;
-    }
-    if( i == 100 ) stopForceAccelerate = true;
-
     float m_car1X = m_car1->getPosition().x;
     float m_car2X = m_car2->getPosition().x;
     m_world.step(PHY_TIME_STEP);
@@ -164,8 +152,6 @@ void Game::updatePhysics()
     m_scene.translateRightBotScreen(std::max(m_car2speedX,MIN_VIEW_SPEED) );
 
     checkDeath();
-
-    i++;
 }
 
 void Game::pause()

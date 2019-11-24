@@ -5,7 +5,7 @@
 #include "GameController.h"
 #include "Game/Game.h"
 
-GameController::GameController(Game* game, Car* car1, Car* car2, uint8_t playerID) : m_game(game), m_car1(car1), m_car2(car2), m_playerID(playerID)
+GameController::GameController(Game* game, Car* car1, uint8_t playerID) : m_game(game), m_car(car1),  m_playerID(playerID)
 {
     sf::Joystick::update();
     m_xboxMode = sf::Joystick::isConnected(playerID);
@@ -66,7 +66,7 @@ void GameController::perpetualCheck()
         float acc = (sf::Joystick::getAxisPosition(m_playerID, sf::Joystick::R)+100.0)/2.0;
         if( acc > 10 )
         {
-            //onAccelerate(acc);
+            onAccelerate(acc);
         }
         float dec = (sf::Joystick::getAxisPosition(m_playerID, sf::Joystick::Z)+100.0)/2.0;
         if( dec > 10 )
@@ -81,9 +81,9 @@ void GameController::onInclination(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car1)
+        if(m_car)
         {
-            m_car1->rotate(-pos);
+            m_car->rotate(-pos);
         }
     }
 
@@ -93,8 +93,8 @@ void GameController::onJump()
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car1)
-            m_car1->jump();
+        if(m_car)
+            m_car->jump();
     }
 }
 
@@ -112,14 +112,9 @@ void GameController::onDecelerate(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car1)
+        if(m_car)
         {
-            std::cout << m_playerID << " decelerate" << "|" << pos << std::endl;
-            m_car1->decelerate(pos);
-        }
-        if(m_car2)
-        {
-            m_car2->accelerate(pos);
+            m_car->decelerate(pos);
         }
     }
 
@@ -129,10 +124,7 @@ void GameController::onAccelerate(float pos)
 {
     if( m_game->getState() == Game::STATE::RUNNING )
     {
-        if(m_car1)
-            m_car1->accelerate(pos);
-        if(m_car2)
-            m_car2->decelerate(pos);
-        std::cout << m_playerID << " accelerate" << "|" << pos << std::endl;
+        if(m_car)
+            m_car->accelerate(pos);
     }
 }

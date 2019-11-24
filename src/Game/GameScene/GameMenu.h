@@ -23,7 +23,8 @@ private:
     Game* m_game;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    sf::RectangleShape m_test;
+    sf::RectangleShape m_logoSFML;
+    sf::Texture m_textureSFML;
     sf::CircleShape m_xboxc0state,m_xboxc1state;
     sf::Text m_GameTitle;
     sf::Text m_pressKey;

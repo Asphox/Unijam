@@ -11,6 +11,12 @@ GameMenu::GameMenu(Game* game) : m_game(game)
     m_view.setSize(sf::Vector2f(game->getWindow().getSize().x,game->getWindow().getSize().y));
     m_view.setViewport(sf::FloatRect(0,0,1.0f,1.0f));
 
+    m_textureSFML.loadFromFile("Assets/logo_sfml.png");
+    m_logoSFML.setTexture(&m_textureSFML);
+    m_logoSFML.setScale(0.5,0.5);
+    m_logoSFML.setSize(sf::Vector2f(550,200));
+    m_logoSFML.setPosition(WORLD_MENU_START_X+30,WORLD_MENU_START_Y+600);
+
     m_GameTitle.setString("MomentVRUM !");
     m_GameTitle.setFont(game->getFont());
     m_GameTitle.setScale(sf::Vector2f(2,2));
@@ -54,6 +60,7 @@ void GameMenu::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_textxboxc1state);
     target.draw(m_xboxc0state);
     target.draw(m_xboxc1state);
+    target.draw(m_logoSFML);
 
 }
 
