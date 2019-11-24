@@ -119,8 +119,9 @@ void Game::reset()
         level->addEntityTop(factory.createBoxStatic(m_world, WORLD_SCENE_TOP_START_X+10000, WORLD_SCENE_TOP_START_Y+500, 2000, 2000));
             //BOT
         level->addEntityBot(factory.createConvexStatic(m_world, WORLD_SCENE_BOT_START_X+5500, WORLD_SCENE_BOT_START_Y+300, convex5Vertices));
-        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+4900, WORLD_SCENE_BOT_START_Y+500, 900, 200));
-        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5850-5300+5300, WORLD_SCENE_BOT_START_Y+320, 50, 10, 350));
+        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+6000, WORLD_SCENE_BOT_START_Y+200, 10, 100));
+        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+6000, WORLD_SCENE_BOT_START_Y+500, 2000, 200));
+        /*level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5850-5300+5300, WORLD_SCENE_BOT_START_Y+320, 50, 10, 350));
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5890-5300+5300, WORLD_SCENE_BOT_START_Y+330, 50, 10, 0));
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5930-5300+5300, WORLD_SCENE_BOT_START_Y+320, 50, 10, 15));
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5965-5300+5300, WORLD_SCENE_BOT_START_Y+310, 50, 10, 35));
@@ -133,7 +134,7 @@ void Game::reset()
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5970-5300+5300, WORLD_SCENE_BOT_START_Y+50, 50, 10, 220));
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5930-5300+5300, WORLD_SCENE_BOT_START_Y+80, 50, 10, 270));
         level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5920-5300+5300, WORLD_SCENE_BOT_START_Y+100, 50, 10, 290));
-        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5920-5300+5300, WORLD_SCENE_BOT_START_Y+140, 50, 10, 320));
+        level->addEntityBot(factory.createBoxStatic(m_world, WORLD_SCENE_BOT_START_X+5920-5300+5300, WORLD_SCENE_BOT_START_Y+140, 50, 10, 320));*/
 
 
     }
