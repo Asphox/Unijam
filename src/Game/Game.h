@@ -16,6 +16,7 @@
 #include "Physics/EntityFactory.h"
 #include "System/Timer.h"
 #include "Entities/Level.h"
+#include "Entities/LeTrait.h"
 
 class Game
 {
@@ -100,6 +101,10 @@ private:
     bool m_shockCar2Processed = false;
     unsigned int jump1 = 0;
     unsigned int jump2 = 0;
+    unsigned int leTrait1 = 0;
+    unsigned int leTrait2 = 0;
+
+    LeTrait* m_leTrait = nullptr;
 
 public:
     inline STATE getState() { return m_state; }

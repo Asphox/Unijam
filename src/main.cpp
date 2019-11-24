@@ -8,8 +8,8 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1850, 1000), "MomentVRUM!");
-    window.setVerticalSyncEnabled(true);
+    sf::RenderWindow window(sf::VideoMode(1600, 720), "MomentVRUM!");
+    //window.setVerticalSyncEnabled(true);
     Game game(window);
     game.run();
     return 0;

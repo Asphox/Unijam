@@ -50,6 +50,9 @@ public:
 
     void reset();
 
+    inline const sf::View& getViewTop() const { return m_viewTop; }
+    inline const sf::View& getViewBot() const { return m_viewBot; }
+
 
 private:
     sf::View m_viewTop,m_viewBot;

@@ -214,6 +214,8 @@ void Game::reset()
 
     m_controller0 = new GameController(this,m_car1,0);
     m_controller1 = new GameController(this,m_car2,1);
+
+    m_leTrait = new LeTrait(m_window,m_scene,m_car1,m_car2);
 }
 
 void Game::run()
@@ -287,8 +289,12 @@ void Game::updateGraphics()
         m_window.draw(*m_car2);
         level->drawBot(m_window);
 
-
         m_window.draw(m_scene);
+        if(m_leTrait)
+        {
+            m_leTrait->update();
+            m_window.draw(*m_leTrait);
+        }
     }
     m_window.display();
 }
@@ -296,14 +302,23 @@ void Game::updateGraphics()
 void Game::updatePhysics()
 {
     static int shockCar1_counter = 0;
-    if(shockCar1_counter==0) m_shockCar1Processed = false;
+    if(shockCar1_counter==0 && m_shockCar1Processed)
+    {
+        m_shockCar1Processed = false;
+        m_leTrait->show(false);
+    }
     static int shockCar2_counter = 0;
-    if(shockCar2_counter==0) m_shockCar2Processed = false;
+    if(shockCar2_counter==0 && m_shockCar2Processed)
+    {
+        m_shockCar2Processed = false;
+        m_leTrait->show(false);
+    }
     if(jump1==0) resetJump1();
     if(jump2==0) resetJump2();
 
     addSpeedsTop(m_car1speedX);
     addSpeedsBot(m_car2speedX);
+
     float m_car1X = m_car1->getPosition().x;
     float m_car2X = m_car2->getPosition().x;
     m_world.step(PHY_TIME_STEP);
@@ -313,12 +328,12 @@ void Game::updatePhysics()
     if( getSpeedsTopAt(5) - m_car1speedX > 0.2 && !m_shockCar1Processed)
     {
         shockDetectedOnCar1(getSpeedsTopAt(5) - m_car1speedX);
-        shockCar1_counter = 50;
+        shockCar1_counter = 200;
     }
     if( getSpeedsBotAt(5) - m_car2speedX > 0.3 && !m_shockCar2Processed)
     {
         shockDetectedOnCar2(getSpeedsBotAt(5) - m_car2speedX);
-        shockCar2_counter = 50;
+        shockCar2_counter = 200;
     }
 
     if(m_car1->getPosition().x < m_scene.getLeftBorderTopX()+RELATIVE_PUSH_VIEW_X)
@@ -349,6 +364,8 @@ void Game::updatePhysics()
 
 void Game::shockDetectedOnCar1(float intensity)
 {
+    m_leTrait->setMode(LeTrait::MODE::M1TO2);
+    m_leTrait->show(true);
     m_car2->impulseForward(intensity);
     m_passedSpeedsTop.clear();
     initStacksSpeedsTop();
@@ -357,6 +374,8 @@ void Game::shockDetectedOnCar1(float intensity)
 
 void Game::shockDetectedOnCar2(float intensity)
 {
+    m_leTrait->setMode(LeTrait::MODE::M2TO1);
+    m_leTrait->show(true);
     m_car1->impulseForward(intensity);
     m_passedSpeedsBot.clear();
     initStacksSpeedsBot();
