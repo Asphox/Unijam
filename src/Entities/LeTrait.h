@@ -6,9 +6,11 @@
 #define UNIJAM_LETRAIT_H
 
 #include <SFML/Graphics.hpp>
+#include "Car.h"
 
 class LeTrait : public sf::Drawable
 {
+public:
 
 };
 

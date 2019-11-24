@@ -24,7 +24,7 @@ GameScene::GameScene(sf::RenderWindow& window) : m_window(window)
     m_splitScreenSeparation.setSize(sf::Vector2f(window.getSize().x,GAMESCENE_SEPARATION_SPLITSCREEN_RATIO*window.getSize().y) );
     m_splitScreenSeparation.setOrigin(m_splitScreenSeparation.getSize().x/2,m_splitScreenSeparation.getSize().y/2);
     m_splitScreenSeparation.setPosition(window.getSize().x/2,window.getSize().y/2);
-    m_splitScreenSeparation.setFillColor(sf::Color::Cyan);
+    m_splitScreenSeparation.setFillColor(sf::Color(32,32,32));
 
     m_jumpStatusTop.setSize(sf::Vector2f(50,50));
     m_jumpStatusTop.setPosition(50, 0.05*m_window.getSize().y);
